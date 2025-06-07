@@ -4,13 +4,13 @@ import { api } from "../convex/_generated/api";
 import { toast } from "sonner";
 
 const buildingConfig = {
-  1: { name: "Colina", fields: ["condominium", "electricity", "water"] },
-  2: { name: "Porto", fields: ["condominium", "electricity", "internet"] },
-  3: { name: "Azul", fields: ["condominium", "electricity", "iptu", "gas"] },
-  4: { name: "Praia", fields: ["condominium", "electricity"] },
+  1: { name: "Colina B1", fields: ["condominium", "electricity", "water"] },
+  2: { name: "Porto Trapiche", fields: ["condominium", "electricity", "internet"] },
+  3: { name: "D'Azul", fields: ["condominium", "electricity", "iptu", "gas"] },
+  4: { name: "Praia do Forte", fields: ["condominium", "electricity"] },
   5: { name: "Hangar", fields: ["condominium", "electricity", "internet"] },
-  6: { name: "Contador", fields: ["patrimonial", "facility", "mjd"] },
-  7: { name: "Despesas", fields: ["consominio", "faculdade", "aluguel", "fiancaMensal"] },
+  6: { name: "Andre Contador", fields: ["patrimonial", "facility", "mjb"] },
+  7: { name: "Despesas Cauã", fields: ["condominio", "faculdade", "aluguel", "fiancaMensal"] },
   8: { name: "Outros", fields: ["baiaMarina", "seguroVida"] }
 };
 
@@ -23,13 +23,13 @@ const fieldLabels: Record<string, string> = {
   gas: "Gás",
   patrimonial: "Patrimonial",
   facility: "Facility",
-  mjd: "MJD",
-  consominio: "Consominio",
+  mjb: "MJB",
+  consominio: "Condominio",
   faculdade: "Faculdade",
   aluguel: "Aluguel",
   fiancaMensal: "Fiança Mensal",
   baiaMarina: "Baia Marina",
-  seguroVida: "Seguro de Vida"
+  seguroVida: "Seguro de Vida Famailia Moura"
 };
 
 export function ReportGenerator() {
@@ -104,8 +104,11 @@ export function ReportGenerator() {
       });
       const total = fieldsToInclude.reduce((sum, field) => sum + ((expense as any)[field] || 0), 0);
       
+      // Formatar data para DD/MM/AAAA (mais compatível com Excel)
+      const formattedDate = new Date(expense.date).toLocaleDateString('pt-BR');
+      
       return [
-        escapeCSV(expense.date),
+        escapeCSV(formattedDate),
         escapeCSV(buildingName),
         ...values.map(v => escapeCSV(v)),
         escapeCSV(total.toFixed(2).replace('.', ','))
