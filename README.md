@@ -1,28 +1,130 @@
-# Sistema de Controle de Finanças
-  
-This is a project built with [Chef](https://chef.convex.dev) using [Convex](https://convex.dev) as its backend.
-  
-This project is connected to the Convex deployment named [`groovy-cheetah-860`](https://dashboard.convex.dev/d/groovy-cheetah-860).
-  
-## Project structure
-  
-The frontend code is in the `app` directory and is built with [Vite](https://vitejs.dev/).
-  
-The backend code is in the `convex` directory.
-  
-`npm run dev` will start the frontend and backend servers.
+# Sistema de Controle Financeiro
 
-## App authentication
+Um sistema completo para gerenciamento de despesas e finanças pessoais, construído com React, Convex e TailwindCSS.
 
-Chef apps use [Convex Auth](https://auth.convex.dev/) with Anonymous auth for easy sign in. You may wish to change this before deploying your app.
+## 🚀 Funcionalidades
 
-## Developing and deploying your app
+- ✅ Autenticação segura com usuário/senha
+- ✅ Gerenciamento de despesas por categorias
+- ✅ Relatórios detalhados por período
+- ✅ Exportação para CSV
+- ✅ Interface responsiva e moderna
+- ✅ Dados em tempo real
 
-Check out the [Convex docs](https://docs.convex.dev/) for more information on how to develop with Convex.
-* If you're new to Convex, the [Overview](https://docs.convex.dev/understanding/) is a good place to start
-* Check out the [Hosting and Deployment](https://docs.convex.dev/production/) docs for how to deploy your app
-* Read the [Best Practices](https://docs.convex.dev/understanding/best-practices/) guide for tips on how to improve you app further
+## 📋 Pré-requisitos
 
-## HTTP API
+- Node.js 18+ 
+- NPM ou Yarn
+- Conta no Convex (gratuita)
 
-User-defined http routes are defined in the `convex/router.ts` file. We split these routes into a separate file from `convex/http.ts` to allow us to prevent the LLM from modifying the authentication routes.
+## 🛠️ Instalação e Configuração
+
+### 1. Clone o repositório
+```bash
+git clone <seu-repositorio>
+cd controle-financas
+```
+
+### 2. Instale as dependências
+```bash
+npm install
+```
+
+### 3. Configure o Convex
+
+1. Crie uma conta em [https://convex.dev](https://convex.dev)
+2. Instale a CLI do Convex:
+```bash
+npm install -g convex
+```
+
+3. Faça login no Convex:
+```bash
+npx convex login
+```
+
+4. Inicialize o projeto:
+```bash
+npx convex dev
+```
+
+### 4. Configure as variáveis de ambiente
+
+1. Copie o arquivo de exemplo:
+```bash
+cp .env.example .env.local
+```
+
+2. Edite `.env.local` e adicione sua URL do Convex:
+```
+VITE_CONVEX_URL=https://your-deployment-url.convex.cloud
+```
+
+### 5. Execute o projeto
+
+Para desenvolvimento:
+```bash
+npm run dev
+```
+
+Para produção:
+```bash
+npm run build
+npm run preview
+```
+
+## 🌐 Deploy para Produção
+
+### Opção 1: Vercel (Recomendado)
+
+1. Conecte seu repositório ao Vercel
+2. Configure a variável de ambiente `VITE_CONVEX_URL`
+3. Deploy automático!
+
+### Opção 2: Netlify
+
+1. Conecte seu repositório ao Netlify
+2. Configure:
+   - Build command: `npm run build`
+   - Publish directory: `dist`
+   - Environment variable: `VITE_CONVEX_URL`
+
+### Opção 3: Outros provedores
+
+Para qualquer provedor que suporte sites estáticos:
+1. Execute `npm run build`
+2. Faça upload da pasta `dist`
+3. Configure a variável `VITE_CONVEX_URL`
+
+## 📊 Categorias de Despesas
+
+O sistema suporta 8 categorias principais:
+
+1. **Colina** - Condomínio, Luz, Água
+2. **Porto** - Condomínio, Luz, Internet  
+3. **Azul** - Condomínio, Luz, IPTU, Gás
+4. **Praia** - Condomínio, Luz
+5. **Hangar** - Condomínio, Luz, Internet
+6. **Contador** - Patrimonial, Facility, MJD
+7. **Despesas** - Consomínio, Faculdade, Aluguel, Fiança Mensal
+8. **Outros** - Baia Marina, Seguro de Vida
+
+## 🔐 Segurança
+
+- Autenticação obrigatória para acesso
+- Dados isolados por usuário
+- Validação de entrada em todas as operações
+- Conexão segura com HTTPS
+
+## 🆘 Suporte
+
+Se encontrar problemas:
+
+1. Verifique se a URL do Convex está correta
+2. Confirme que o deployment do Convex está ativo
+3. Verifique o console do navegador para erros
+4. Teste a conexão com o Convex Dashboard
+
+## 📝 Licença
+
+Este projeto é privado e de uso restrito.

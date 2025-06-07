@@ -7,15 +7,85 @@ interface BuildingManagerProps {
   buildingId: number;
 }
 
+const buildingConfig = {
+  1: { 
+    name: "Colina B1", 
+    fields: [
+      { key: "condominium", label: "Condomínio (R$)" },
+      { key: "electricity", label: "Luz (R$)" },
+      { key: "water", label: "Água (R$)" }
+    ]
+  },
+  2: { 
+    name: "Porto Trapiche", 
+    fields: [
+      { key: "condominium", label: "Condomínio (R$)" },
+      { key: "electricity", label: "Luz (R$)" },
+      { key: "internet", label: "Internet (R$)" }
+    ]
+  },
+  3: { 
+    name: "D'Azul", 
+    fields: [
+      { key: "condominium", label: "Condomínio (R$)" },
+      { key: "electricity", label: "Luz (R$)" },
+      { key: "iptu", label: "IPTU (R$)" },
+      { key: "gas", label: "Gás (R$)" }
+    ]
+  },
+  4: { 
+    name: "Praia do Forte", 
+    fields: [
+      { key: "condominium", label: "Condomínio (R$)" },
+      { key: "electricity", label: "Luz (R$)" }
+    ]
+  },
+  5: { 
+    name: "Hangar", 
+    fields: [
+      { key: "condominium", label: "Condomínio (R$)" },
+      { key: "electricity", label: "Luz (R$)" },
+      { key: "internet", label: "Internet (R$)" }
+    ]
+  },
+  6: { 
+    name: "Andre Contador", 
+    fields: [
+      { key: "patrimonial", label: "Patrimonial (R$)" },
+      { key: "facility", label: "Moura Facility (R$)" },
+      { key: "mjd", label: "MJD (R$)" }
+    ]
+  },
+  7: { 
+    name: "Despesas Cauã", 
+    fields: [
+      { key: "condominio", label: "Condomínio (R$)" },
+      { key: "faculdade", label: "Faculdade (R$)" },
+      { key: "aluguel", label: "Aluguel (R$)" },
+      { key: "fiancaMensal", label: "Fiança Mensal (R$)" }
+    ]
+  },
+  8: { 
+    name: "Outros", 
+    fields: [
+      { key: "baiaMarina", label: "Baia Marina (R$)" },
+      { key: "seguroVida", label: "Seguro de Vida Família Moura (R$)" }
+    ]
+  }
+};
+
 export function BuildingManager({ buildingId }: BuildingManagerProps) {
   const [date, setDate] = useState("");
-  const [water, setWater] = useState("");
-  const [electricity, setElectricity] = useState("");
-  const [condominium, setCondominium] = useState("");
+  const [formData, setFormData] = useState<Record<string, string>>({});
 
+  const config = buildingConfig[buildingId as keyof typeof buildingConfig];
   const expenses = useQuery(api.expenses.getExpensesByBuilding, { buildingId });
   const addExpense = useMutation(api.expenses.addExpense);
   const deleteExpense = useMutation(api.expenses.deleteExpense);
+
+  const handleFieldChange = (fieldKey: string, value: string) => {
+    setFormData(prev => ({ ...prev, [fieldKey]: value }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,24 +96,30 @@ export function BuildingManager({ buildingId }: BuildingManagerProps) {
     }
 
     // Verificar se pelo menos um campo foi preenchido
-    if (!water && !electricity && !condominium) {
+    const hasAnyField = Object.values(formData).some(value => value && value.trim() !== "");
+    if (!hasAnyField) {
       toast.error("Pelo menos um tipo de despesa deve ser informado");
       return;
     }
 
     try {
-      await addExpense({
+      const expenseData: any = {
         buildingId,
         date,
-        water: water ? parseFloat(water) : undefined,
-        electricity: electricity ? parseFloat(electricity) : undefined,
-        condominium: condominium ? parseFloat(condominium) : undefined,
+      };
+
+      // Adicionar apenas os campos preenchidos
+      config.fields.forEach(field => {
+        const value = formData[field.key];
+        if (value && value.trim() !== "") {
+          expenseData[field.key] = parseFloat(value);
+        }
       });
 
+      await addExpense(expenseData);
+
       setDate("");
-      setWater("");
-      setElectricity("");
-      setCondominium("");
+      setFormData({});
       
       toast.success("Despesa adicionada com sucesso!");
     } catch (error) {
@@ -75,17 +151,22 @@ export function BuildingManager({ buildingId }: BuildingManagerProps) {
   };
 
   const calculateTotal = (expense: any) => {
-    const water = expense.water || 0;
-    const electricity = expense.electricity || 0;
-    const condominium = expense.condominium || 0;
-    return water + electricity + condominium;
+    let total = 0;
+    config.fields.forEach(field => {
+      total += expense[field.key] || 0;
+    });
+    return total;
+  };
+
+  const getFieldValue = (expense: any, fieldKey: string) => {
+    return expense[fieldKey];
   };
 
   return (
     <div className="space-y-8">
       <div className="text-center">
         <h2 className="text-2xl font-bold text-gray-800 mb-2">
-          Prédio {buildingId}
+          {config.name}
         </h2>
         <p className="text-gray-600">Gerenciar contas e despesas</p>
       </div>
@@ -113,47 +194,21 @@ export function BuildingManager({ buildingId }: BuildingManagerProps) {
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Água (R$) - Opcional
-            </label>
-            <input
-              type="number"
-              step="0.01"
-              value={water}
-              onChange={(e) => setWater(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-              placeholder="0,00"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Luz (R$) - Opcional
-            </label>
-            <input
-              type="number"
-              step="0.01"
-              value={electricity}
-              onChange={(e) => setElectricity(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-              placeholder="0,00"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Condomínio (R$) - Opcional
-            </label>
-            <input
-              type="number"
-              step="0.01"
-              value={condominium}
-              onChange={(e) => setCondominium(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-              placeholder="0,00"
-            />
-          </div>
+          {config.fields.map((field) => (
+            <div key={field.key}>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                {field.label} - Opcional
+              </label>
+              <input
+                type="number"
+                step="0.01"
+                value={formData[field.key] || ""}
+                onChange={(e) => handleFieldChange(field.key, e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                placeholder="0,00"
+              />
+            </div>
+          ))}
 
           <div className="md:col-span-2">
             <button
@@ -182,15 +237,11 @@ export function BuildingManager({ buildingId }: BuildingManagerProps) {
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Data
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Água
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Luz
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Condomínio
-                  </th>
+                  {config.fields.map((field) => (
+                    <th key={field.key} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      {field.label.replace(" (R$)", "")}
+                    </th>
+                  ))}
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Total
                   </th>
@@ -205,15 +256,11 @@ export function BuildingManager({ buildingId }: BuildingManagerProps) {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       {formatDate(expense.date)}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {formatCurrency(expense.water)}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {formatCurrency(expense.electricity)}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {formatCurrency(expense.condominium)}
-                    </td>
+                    {config.fields.map((field) => (
+                      <td key={field.key} className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {formatCurrency(getFieldValue(expense, field.key))}
+                      </td>
+                    ))}
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">
                       {formatCurrency(calculateTotal(expense))}
                     </td>

@@ -4,11 +4,23 @@ import { authTables } from "@convex-dev/auth/server";
 
 const applicationTables = {
   expenses: defineTable({
-    buildingId: v.number(), // 1-8 para os prédios
+    buildingId: v.number(), 
     date: v.string(),
-    water: v.optional(v.number()),
-    electricity: v.optional(v.number()),
     condominium: v.optional(v.number()),
+    electricity: v.optional(v.number()),
+    water: v.optional(v.number()),
+    internet: v.optional(v.number()),
+    iptu: v.optional(v.number()),
+    gas: v.optional(v.number()),
+    patrimonial: v.optional(v.number()),
+    facility: v.optional(v.number()),
+    mjd: v.optional(v.number()),
+    condominio: v.optional(v.number()),
+    faculdade: v.optional(v.number()),
+    aluguel: v.optional(v.number()),
+    fiancaMensal: v.optional(v.number()),
+    baiaMarina: v.optional(v.number()),
+    seguroVida: v.optional(v.number()),
     userId: v.id("users"),
   }).index("by_building", ["buildingId"])
     .index("by_user", ["userId"])

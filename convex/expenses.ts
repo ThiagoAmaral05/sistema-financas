@@ -6,9 +6,21 @@ export const addExpense = mutation({
   args: {
     buildingId: v.number(),
     date: v.string(),
-    water: v.optional(v.number()),
-    electricity: v.optional(v.number()),
     condominium: v.optional(v.number()),
+    electricity: v.optional(v.number()),
+    water: v.optional(v.number()),
+    internet: v.optional(v.number()),
+    iptu: v.optional(v.number()),
+    gas: v.optional(v.number()),
+    patrimonial: v.optional(v.number()),
+    facility: v.optional(v.number()),
+    mjd: v.optional(v.number()),
+    condominio: v.optional(v.number()),
+    faculdade: v.optional(v.number()),
+    aluguel: v.optional(v.number()),
+    fiancaMensal: v.optional(v.number()),
+    baiaMarina: v.optional(v.number()),
+    seguroVida: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
@@ -17,16 +29,32 @@ export const addExpense = mutation({
     }
 
     // Verificar se pelo menos um campo foi preenchido
-    if (!args.water && !args.electricity && !args.condominium) {
+    const hasAnyField = Object.values(args).some(value => 
+      value !== undefined && value !== args.buildingId && value !== args.date
+    );
+    
+    if (!hasAnyField) {
       throw new Error("Pelo menos um tipo de despesa deve ser informado");
     }
 
     return await ctx.db.insert("expenses", {
       buildingId: args.buildingId,
       date: args.date,
-      water: args.water,
-      electricity: args.electricity,
       condominium: args.condominium,
+      electricity: args.electricity,
+      water: args.water,
+      internet: args.internet,
+      iptu: args.iptu,
+      gas: args.gas,
+      patrimonial: args.patrimonial,
+      facility: args.facility,
+      mjd: args.mjd,
+      condominio: args.condominio,
+      faculdade: args.faculdade,
+      aluguel: args.aluguel,
+      fiancaMensal: args.fiancaMensal,
+      baiaMarina: args.baiaMarina,
+      seguroVida: args.seguroVida,
       userId,
     });
   },

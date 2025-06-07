@@ -2,6 +2,35 @@ import { useState } from "react";
 import { useQuery } from "convex/react";
 import { api } from "../convex/_generated/api";
 
+const buildingConfig = {
+  1: { name: "Colina B1", fields: ["condominium", "electricity", "water"] },
+  2: { name: "Porto Trapiche", fields: ["condominium", "electricity", "internet"] },
+  3: { name: "D'Azul", fields: ["condominium", "electricity", "iptu", "gas"] },
+  4: { name: "Praia do Forte", fields: ["condominium", "electricity"] },
+  5: { name: "Hangar", fields: ["condominium", "electricity", "internet"] },
+  6: { name: "Andre Contador", fields: ["patrimonial", "facility", "mjd"] },
+  7: { name: "Despesas Cauã", fields: ["condominio", "faculdade", "aluguel", "fiancaMensal"] },
+  8: { name: "Outros", fields: ["baiaMarina", "seguroVida"] }
+};
+
+const fieldLabels: Record<string, string> = {
+  condominium: "Condomínio",
+  electricity: "Luz",
+  water: "Água",
+  internet: "Internet",
+  iptu: "IPTU",
+  gas: "Gás",
+  patrimonial: "Patrimonial",
+  facility: "Moura Facility",
+  mjd: "MJD",
+  condominio: "Condomínio",
+  faculdade: "Faculdade",
+  aluguel: "Aluguel",
+  fiancaMensal: "Fiança Mensal",
+  baiaMarina: "Baia Marina",
+  seguroVida: "Seguro de Vida Família Moura"
+};
+
 export function ReportGenerator() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -38,17 +67,31 @@ export function ReportGenerator() {
   const exportToCSV = () => {
     if (!expenses || expenses.length === 0) return;
 
-    const headers = ['Data', 'Prédio', 'Água', 'Luz', 'Condomínio', 'Total'];
+    // Determinar quais campos incluir no CSV
+    let fieldsToInclude: string[] = [];
+    if (selectedBuilding) {
+      const config = buildingConfig[selectedBuilding as keyof typeof buildingConfig];
+      fieldsToInclude = config.fields;
+    } else {
+      // Se todos os prédios, incluir todos os campos
+      fieldsToInclude = Object.keys(fieldLabels);
+    }
+
+    const headers = ['Data', 'Categoria', ...fieldsToInclude.map(field => fieldLabels[field]), 'Total'];
     const csvContent = [
       headers.join(','),
-      ...expenses.map(expense => [
-        expense.date,
-        `Prédio ${expense.buildingId}`,
-        expense.water?.toFixed(2) || '0.00',
-        expense.electricity?.toFixed(2) || '0.00',
-        expense.condominium?.toFixed(2) || '0.00',
-        ((expense.water || 0) + (expense.electricity || 0) + (expense.condominium || 0)).toFixed(2)
-      ].join(','))
+      ...expenses.map(expense => {
+        const buildingName = buildingConfig[expense.buildingId as keyof typeof buildingConfig]?.name || `P${expense.buildingId}`;
+        const values = fieldsToInclude.map(field => (expense as any)[field]?.toFixed(2) || '0.00');
+        const total = fieldsToInclude.reduce((sum, field) => sum + ((expense as any)[field] || 0), 0);
+        
+        return [
+          expense.date,
+          buildingName,
+          ...values,
+          total.toFixed(2)
+        ].join(',');
+      })
     ].join('\n');
 
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -63,21 +106,30 @@ export function ReportGenerator() {
   };
 
   const getTotals = () => {
-    if (!expenses) return { water: 0, electricity: 0, condominium: 0, total: 0 };
+    if (!expenses) return {};
     
-    return expenses.reduce((acc, expense) => ({
-      water: acc.water + (expense.water || 0),
-      electricity: acc.electricity + (expense.electricity || 0),
-      condominium: acc.condominium + (expense.condominium || 0),
-      total: acc.total + (expense.water || 0) + (expense.electricity || 0) + (expense.condominium || 0)
-    }), { water: 0, electricity: 0, condominium: 0, total: 0 });
+    const totals: Record<string, number> = {};
+    let grandTotal = 0;
+
+    expenses.forEach(expense => {
+      const config = buildingConfig[expense.buildingId as keyof typeof buildingConfig];
+      if (config) {
+        config.fields.forEach(field => {
+          const value = (expense as any)[field] || 0;
+          totals[field] = (totals[field] || 0) + value;
+          grandTotal += value;
+        });
+      }
+    });
+
+    return { ...totals, grandTotal };
   };
 
   const calculateTotal = (expense: any) => {
-    const water = expense.water || 0;
-    const electricity = expense.electricity || 0;
-    const condominium = expense.condominium || 0;
-    return water + electricity + condominium;
+    const config = buildingConfig[expense.buildingId as keyof typeof buildingConfig];
+    if (!config) return 0;
+    
+    return config.fields.reduce((total, field) => total + (expense[field] || 0), 0);
   };
 
   const totals = getTotals();
@@ -128,16 +180,16 @@ export function ReportGenerator() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Prédio (Opcional)
+              Categoria (Opcional)
             </label>
             <select
               value={selectedBuilding || ""}
               onChange={(e) => setSelectedBuilding(e.target.value ? parseInt(e.target.value) : undefined)}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
             >
-              <option value="">Todos os prédios</option>
-              {[1, 2, 3, 4, 5, 6, 7, 8].map(num => (
-                <option key={num} value={num}>Prédio {num}</option>
+              <option value="">Todas as categorias</option>
+              {Object.entries(buildingConfig).map(([id, config]) => (
+                <option key={id} value={id}>{config.name}</option>
               ))}
             </select>
           </div>
@@ -168,7 +220,7 @@ export function ReportGenerator() {
           <div className="p-6 border-b border-gray-200">
             <h3 className="text-lg font-semibold text-gray-800">
               Relatório de {formatDate(startDate)} até {formatDate(endDate)}
-              {selectedBuilding && ` - Prédio ${selectedBuilding}`}
+              {selectedBuilding && ` - ${buildingConfig[selectedBuilding as keyof typeof buildingConfig]?.name}`}
             </h3>
           </div>
           
@@ -182,16 +234,10 @@ export function ReportGenerator() {
                         Data
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Prédio
+                        Categoria
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Água
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Luz
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Condomínio
+                        Descrição
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Total
@@ -199,45 +245,38 @@ export function ReportGenerator() {
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
-                    {expenses.map((expense) => (
-                      <tr key={expense._id} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {formatDate(expense.date)}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          Prédio {expense.buildingId}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {formatCurrency(expense.water)}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {formatCurrency(expense.electricity)}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {formatCurrency(expense.condominium)}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">
-                          {formatCurrency(calculateTotal(expense))}
-                        </td>
-                      </tr>
-                    ))}
+                    {expenses.map((expense) => {
+                      const config = buildingConfig[expense.buildingId as keyof typeof buildingConfig];
+                      const filledFields = config?.fields.filter(field => (expense as any)[field]) || [];
+                      const description = filledFields.map(field => 
+                        `${fieldLabels[field]}: ${formatCurrency((expense as any)[field])}`
+                      ).join(', ');
+
+                      return (
+                        <tr key={expense._id} className="hover:bg-gray-50">
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            {formatDate(expense.date)}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            {config?.name || `P${expense.buildingId}`}
+                          </td>
+                          <td className="px-6 py-4 text-sm text-gray-900">
+                            {description || "Nenhum valor informado"}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">
+                            {formatCurrency(calculateTotal(expense))}
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                   <tfoot className="bg-green-50">
                     <tr>
-                      <td colSpan={2} className="px-6 py-4 text-sm font-bold text-gray-900">
-                        TOTAIS:
+                      <td colSpan={3} className="px-6 py-4 text-sm font-bold text-gray-900">
+                        TOTAL GERAL:
                       </td>
                       <td className="px-6 py-4 text-sm font-bold text-green-700">
-                        {formatCurrency(totals.water)}
-                      </td>
-                      <td className="px-6 py-4 text-sm font-bold text-green-700">
-                        {formatCurrency(totals.electricity)}
-                      </td>
-                      <td className="px-6 py-4 text-sm font-bold text-green-700">
-                        {formatCurrency(totals.condominium)}
-                      </td>
-                      <td className="px-6 py-4 text-sm font-bold text-green-700">
-                        {formatCurrency(totals.total)}
+                        {formatCurrency((totals as any).grandTotal || 0)}
                       </td>
                     </tr>
                   </tfoot>
