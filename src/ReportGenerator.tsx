@@ -4,13 +4,13 @@ import { api } from "../convex/_generated/api";
 import { toast } from "sonner";
 
 const buildingConfig = {
-  1: { name: "Colina B1", fields: ["condominium", "electricity", "water"] },
-  2: { name: "Porto Trapiche", fields: ["condominium", "electricity", "internet"] },
-  3: { name: "D'Azul", fields: ["condominium", "electricity", "iptu", "gas"] },
-  4: { name: "Praia do Forte", fields: ["condominium", "electricity"] },
+  1: { name: "Colina", fields: ["condominium", "electricity", "water"] },
+  2: { name: "Porto", fields: ["condominium", "electricity", "internet"] },
+  3: { name: "Azul", fields: ["condominium", "electricity", "iptu", "gas"] },
+  4: { name: "Praia", fields: ["condominium", "electricity"] },
   5: { name: "Hangar", fields: ["condominium", "electricity", "internet"] },
-  6: { name: "Andre Contador", fields: ["patrimonial", "facility", "mjb"] },
-  7: { name: "Despesas Cauã", fields: ["condominio", "faculdade", "aluguel", "fiancaMensal"] },
+  6: { name: "Contador", fields: ["patrimonial", "facility", "mjd"] },
+  7: { name: "Despesas", fields: ["consominio", "faculdade", "aluguel", "fiancaMensal"] },
   8: { name: "Outros", fields: ["baiaMarina", "seguroVida"] }
 };
 
@@ -22,14 +22,14 @@ const fieldLabels: Record<string, string> = {
   iptu: "IPTU",
   gas: "Gás",
   patrimonial: "Patrimonial",
-  facility: "Moura Facility",
-  mjb: "MJB",
-  condominio: "Condomínio",
+  facility: "Facility",
+  mjd: "MJD",
+  consominio: "Consominio",
   faculdade: "Faculdade",
   aluguel: "Aluguel",
   fiancaMensal: "Fiança Mensal",
   baiaMarina: "Baia Marina",
-  seguroVida: "Seguro de Vida Família Moura"
+  seguroVida: "Seguro de Vida"
 };
 
 export function ReportGenerator() {
@@ -82,24 +82,46 @@ export function ReportGenerator() {
       fieldsToInclude = Object.keys(fieldLabels);
     }
 
-    const headers = ['Data', 'Categoria', ...fieldsToInclude.map(field => fieldLabels[field]), 'Total'];
-    const csvContent = [
-      headers.join(','),
-      ...expenses.map(expense => {
-        const buildingName = buildingConfig[expense.buildingId as keyof typeof buildingConfig]?.name || `P${expense.buildingId}`;
-        const values = fieldsToInclude.map(field => (expense as any)[field]?.toFixed(2) || '0.00');
-        const total = fieldsToInclude.reduce((sum, field) => sum + ((expense as any)[field] || 0), 0);
-        
-        return [
-          expense.date,
-          buildingName,
-          ...values,
-          total.toFixed(2)
-        ].join(',');
-      })
-    ].join('\n');
+    // Função para escapar valores CSV
+    const escapeCSV = (value: string | number) => {
+      const stringValue = String(value);
+      // Se contém vírgula, aspas ou quebra de linha, envolver em aspas duplas
+      if (stringValue.includes(',') || stringValue.includes('"') || stringValue.includes('\n') || stringValue.includes(';')) {
+        return `"${stringValue.replace(/"/g, '""')}"`;
+      }
+      return stringValue;
+    };
 
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    // Cabeçalhos
+    const headers = ['Data', 'Categoria', ...fieldsToInclude.map(field => fieldLabels[field]), 'Total'];
+    
+    // Dados
+    const rows = expenses.map(expense => {
+      const buildingName = buildingConfig[expense.buildingId as keyof typeof buildingConfig]?.name || `P${expense.buildingId}`;
+      const values = fieldsToInclude.map(field => {
+        const value = (expense as any)[field];
+        return value ? value.toFixed(2).replace('.', ',') : '0,00'; // Usar vírgula como separador decimal
+      });
+      const total = fieldsToInclude.reduce((sum, field) => sum + ((expense as any)[field] || 0), 0);
+      
+      return [
+        escapeCSV(expense.date),
+        escapeCSV(buildingName),
+        ...values.map(v => escapeCSV(v)),
+        escapeCSV(total.toFixed(2).replace('.', ','))
+      ];
+    });
+
+    // Montar CSV com separador de ponto e vírgula (padrão brasileiro para Excel)
+    const csvContent = [
+      headers.map(h => escapeCSV(h)).join(';'),
+      ...rows.map(row => row.join(';'))
+    ].join('\r\n');
+
+    // Adicionar BOM para UTF-8 (garante acentos no Excel)
+    const BOM = '\uFEFF';
+    const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
+    
     const link = document.createElement('a');
     const url = URL.createObjectURL(blob);
     link.setAttribute('href', url);
