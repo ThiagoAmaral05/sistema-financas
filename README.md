@@ -96,19 +96,6 @@ Para qualquer provedor que suporte sites estáticos:
 2. Faça upload da pasta `dist`
 3. Configure a variável `VITE_CONVEX_URL`
 
-## 📊 Categorias de Despesas
-
-O sistema suporta 8 categorias principais:
-
-1. **Colina** - Condomínio, Luz, Água
-2. **Porto** - Condomínio, Luz, Internet  
-3. **Azul** - Condomínio, Luz, IPTU, Gás
-4. **Praia** - Condomínio, Luz
-5. **Hangar** - Condomínio, Luz, Internet
-6. **Contador** - Patrimonial, Facility, MJD
-7. **Despesas** - Consomínio, Faculdade, Aluguel, Fiança Mensal
-8. **Outros** - Baia Marina, Seguro de Vida
-
 ## 🔐 Segurança
 
 - Autenticação obrigatória para acesso
