@@ -26,13 +26,6 @@ No arquivo `src/SignInForm.tsx`, atualize a mensagem para:
 </p>
 ```
 
-### 4. **Deploy final**
-```bash
-npm run build
-# ou se estiver usando o Convex CLI:
-npx convex dev
-```
-
 ## 🎯 Resultado Final
 Após esses passos, seu sistema estará:
 - ✅ Seguro (sem opção de criar novas contas)

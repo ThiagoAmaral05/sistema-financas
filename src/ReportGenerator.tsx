@@ -47,11 +47,7 @@ export function ReportGenerator() {
 
   const handleGenerateReport = () => {
     if (!startDate || !endDate) {
-      toast.error("Por favor, selecione as datas de início e fim");
-      return;
-    }
-    if (new Date(startDate) > new Date(endDate)) {
-      toast.error("A data inicial deve ser anterior à data final");
+      alert("Por favor, selecione as datas de início e fim");
       return;
     }
     setShowReport(true);
