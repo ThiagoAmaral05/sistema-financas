@@ -56,7 +56,7 @@ export function SignInForm() {
                 Acesso Restrito
               </h3>
               <p className="text-sm text-yellow-700 mt-1">
-                Este sistema é de uso exclusivo do administrador. Não é possível criar novas contas.
+                Este sistema é de uso exclusivo do administrador. Acesso restrito.
               </p>
             </div>
           </div>

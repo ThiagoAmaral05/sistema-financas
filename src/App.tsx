@@ -3,7 +3,6 @@ import { api } from "../convex/_generated/api";
 import { SignInForm } from "./SignInForm";
 import { SignOutButton } from "./SignOutButton";
 import { PasswordChange } from "./PasswordChange";
-import { TempSignUp } from "./TempSignUp";
 import { Toaster } from "sonner";
 import { Dashboard } from "./Dashboard";
 
@@ -62,7 +61,6 @@ function Content() {
               Acesso restrito - Faça login para continuar
             </p>
           </div>
-          <TempSignUp />
           <SignInForm />
         </div>
       </Unauthenticated>
