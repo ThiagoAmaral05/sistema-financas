@@ -53,7 +53,7 @@ const buildingConfig = {
     fields: [
       { key: "patrimonial", label: "Patrimonial (R$)" },
       { key: "facility", label: "Moura Facility (R$)" },
-      { key: "mjd", label: "MJD (R$)" }
+      { key: "mjb", label: "MJB (R$)" }
     ]
   },
   7: { 
@@ -112,7 +112,10 @@ export function BuildingManager({ buildingId }: BuildingManagerProps) {
       config.fields.forEach(field => {
         const value = formData[field.key];
         if (value && value.trim() !== "") {
-          expenseData[field.key] = parseFloat(value);
+          const numValue = parseFloat(value);
+          if (!isNaN(numValue) && numValue >= 0) {
+            expenseData[field.key] = numValue;
+          }
         }
       });
 
@@ -122,8 +125,8 @@ export function BuildingManager({ buildingId }: BuildingManagerProps) {
       setFormData({});
       
       toast.success("Despesa adicionada com sucesso!");
-    } catch (error) {
-      toast.error("Erro ao adicionar despesa");
+    } catch (error: any) {
+      toast.error(error.message || "Erro ao adicionar despesa");
     }
   };
 

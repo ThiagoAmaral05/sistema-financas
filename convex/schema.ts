@@ -14,7 +14,7 @@ const applicationTables = {
     gas: v.optional(v.number()),
     patrimonial: v.optional(v.number()),
     facility: v.optional(v.number()),
-    mjd: v.optional(v.number()),
+    mjb: v.optional(v.number()),
     condominio: v.optional(v.number()),
     faculdade: v.optional(v.number()),
     aluguel: v.optional(v.number()),

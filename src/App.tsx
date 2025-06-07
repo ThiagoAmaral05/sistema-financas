@@ -2,6 +2,8 @@ import { Authenticated, Unauthenticated, useQuery } from "convex/react";
 import { api } from "../convex/_generated/api";
 import { SignInForm } from "./SignInForm";
 import { SignOutButton } from "./SignOutButton";
+import { PasswordChange } from "./PasswordChange";
+import { TempSignUp } from "./TempSignUp";
 import { Toaster } from "sonner";
 import { Dashboard } from "./Dashboard";
 
@@ -11,12 +13,15 @@ export default function App() {
       <header className="sticky top-0 z-10 bg-white shadow-md h-16 flex justify-between items-center px-6">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-lg">₹</span>
+            <span className="text-white font-bold text-lg">💰</span>
           </div>
           <h2 className="text-xl font-bold text-gray-800">Controle de Finanças</h2>
         </div>
         <Authenticated>
-          <SignOutButton />
+          <div className="flex items-center gap-4">
+            <PasswordChange />
+            <SignOutButton />
+          </div>
         </Authenticated>
       </header>
       
@@ -57,6 +62,7 @@ function Content() {
               Acesso restrito - Faça login para continuar
             </p>
           </div>
+          <TempSignUp />
           <SignInForm />
         </div>
       </Unauthenticated>

@@ -14,7 +14,7 @@ export const addExpense = mutation({
     gas: v.optional(v.number()),
     patrimonial: v.optional(v.number()),
     facility: v.optional(v.number()),
-    mjd: v.optional(v.number()),
+    mjb: v.optional(v.number()),
     condominio: v.optional(v.number()),
     faculdade: v.optional(v.number()),
     aluguel: v.optional(v.number()),
@@ -28,12 +28,12 @@ export const addExpense = mutation({
       throw new Error("Usuário não autenticado");
     }
 
-    // Verificar se pelo menos um campo foi preenchido
-    const hasAnyField = Object.values(args).some(value => 
-      value !== undefined && value !== args.buildingId && value !== args.date
+     // Verificar se pelo menos um campo foi preenchido
+    const expenseFields = Object.entries(args).filter(([key, value]) => 
+      key !== 'buildingId' && key !== 'date' && value !== undefined && typeof value === 'number' && value > 0
     );
     
-    if (!hasAnyField) {
+    if (expenseFields.length === 0) {
       throw new Error("Pelo menos um tipo de despesa deve ser informado");
     }
 
@@ -48,7 +48,7 @@ export const addExpense = mutation({
       gas: args.gas,
       patrimonial: args.patrimonial,
       facility: args.facility,
-      mjd: args.mjd,
+      mjb: args.mjb,
       condominio: args.condominio,
       faculdade: args.faculdade,
       aluguel: args.aluguel,

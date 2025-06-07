@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "convex/react";
 import { api } from "../convex/_generated/api";
+import { toast } from "sonner";
 
 const buildingConfig = {
   1: { name: "Colina B1", fields: ["condominium", "electricity", "water"] },
@@ -8,7 +9,7 @@ const buildingConfig = {
   3: { name: "D'Azul", fields: ["condominium", "electricity", "iptu", "gas"] },
   4: { name: "Praia do Forte", fields: ["condominium", "electricity"] },
   5: { name: "Hangar", fields: ["condominium", "electricity", "internet"] },
-  6: { name: "Andre Contador", fields: ["patrimonial", "facility", "mjd"] },
+  6: { name: "Andre Contador", fields: ["patrimonial", "facility", "mjb"] },
   7: { name: "Despesas Cauã", fields: ["condominio", "faculdade", "aluguel", "fiancaMensal"] },
   8: { name: "Outros", fields: ["baiaMarina", "seguroVida"] }
 };
@@ -22,7 +23,7 @@ const fieldLabels: Record<string, string> = {
   gas: "Gás",
   patrimonial: "Patrimonial",
   facility: "Moura Facility",
-  mjd: "MJD",
+  mjb: "MJB",
   condominio: "Condomínio",
   faculdade: "Faculdade",
   aluguel: "Aluguel",
@@ -46,7 +47,11 @@ export function ReportGenerator() {
 
   const handleGenerateReport = () => {
     if (!startDate || !endDate) {
-      alert("Por favor, selecione as datas de início e fim");
+      toast.error("Por favor, selecione as datas de início e fim");
+      return;
+    }
+    if (new Date(startDate) > new Date(endDate)) {
+      toast.error("A data inicial deve ser anterior à data final");
       return;
     }
     setShowReport(true);
