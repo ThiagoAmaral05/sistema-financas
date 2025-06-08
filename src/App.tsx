@@ -17,10 +17,7 @@ export default function App() {
           <h2 className="text-xl font-bold text-gray-800">Controle de Finanças</h2>
         </div>
         <Authenticated>
-          <div className="flex items-center gap-4">
-            <PasswordChange />
-            <SignOutButton />
-          </div>
+          <SignOutButton />
         </Authenticated>
       </header>
       
@@ -48,10 +45,20 @@ function Content() {
   return (
     <div className="flex flex-col gap-8">
       <Authenticated>
+        <div className="flex justify-between items-center mb-6">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-800">
+              Bem-vindo ao Sistema
+            </h1>
+            <p className="text-gray-600">
+              Usuário: {loggedInUser?.email}
+            </p>
+          </div>
+        </div>
         <Dashboard />
       </Authenticated>
       
-      <Unauthenticated>
+       <Unauthenticated>
         <div className="max-w-md mx-auto">
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-gray-800 mb-4">
@@ -62,6 +69,23 @@ function Content() {
             </p>
           </div>
           <SignInForm />
+          
+          {/* Botão de Alteração de Senha na tela de login */}
+          <div className="mt-6 text-center">
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-sm font-medium text-blue-800">
+                    Precisa alterar sua senha?
+                  </h3>
+                  <p className="text-xs text-blue-600 mt-1">
+                    Clique aqui para alterar sua senha de acesso
+                  </p>
+                </div>
+                <PasswordChange />
+              </div>
+            </div>
+          </div>
         </div>
       </Unauthenticated>
     </div>

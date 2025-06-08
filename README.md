@@ -5,36 +5,36 @@ Um sistema completo para gerenciamento de despesas e finanças pessoais.
 ## 📚 Sumário
 -----------------------------------------------------------------------------------
 
-- [🚀 Sobre o Projeto](#sobre-o-projeto)
-- [⚙️ Como Utilizar](#como-utilizar)
-- [📦 Criar Ambiente](#criar-ambiente)
-- [🛠️ Pré-requisitos](#pré-requisitos)
-- [💻 No Terminal](#no-terminal)
-- [▶️ Executar o Projeto](#executar-o-projeto)
-- [🌐 Deploy para Produção](#deploy-para-produção)
-  - [▲ Vercel](#vercel)
-  - [🌍 Netlify](#netlify)
-- [🔒 Segurança](#segurança)
-- [🧩 Aplicação](#aplicação)
-- [📈 Funcionalidades](#funcionalidades)
-- [📄 Licença](#licença)
+- [Sobre o Projeto](#sobre-o-projeto)
+- [Como Utilizar](#como-utilizar)
+- [Criar Ambiente](#criar-ambiente)
+- [Pré-requisitos](#pré-requisitos)
+- [No Terminal](#no-terminal)
+- [Executar o Projeto](#executar-o-projeto)
+- [Deploy para Produção](#deploy-para-produção)
+  - [Vercel](#vercel)
+  - [Netlify](#netlify)
+- [Segurança](#segurança)
+- [Aplicação](#aplicação)
+- [Funcionalidades](#funcionalidades)
+- [Licença](#licença)
 
-## Sobre o Projeto
+## 🚀 Sobre o Projeto
 
-## Como Utilizar
+## ⚙️ Como Utilizar
 
-## Criar Ambiente
+## 📦 Criar Ambiente
 
 - Crie a pasta do projeto
 - Crie um ambiente virtual
 
-## Pré-requisitos
+## 🛠️ Pré-requisitos
 
 - Node.js 
 - NPM 
 - Conta no Convex 
 
-## No Terminal
+## 💻 No Terminal
 Execute os comandos abaixo no terminal:
 
 - node -v
@@ -46,22 +46,22 @@ Execute os comandos abaixo no terminal:
 - convex --version
 - npm install npm-run-all
 
-## Executar o Projeto
+## ▶️ Executar o Projeto
 Para executar como desenvolvimento:
 
 - npm install npm-run-all
 - npm run dev
 
-## Deploy para Produção
+## 🌐 Deploy para Produção
 
-### Vercel
+### ▲ Vercel
 
 - Conecte seu repositório do Github ao Vercel
 - Configure a variável de ambiente: 
    - VITE_CONVEX_URL / https://your-deployment-url.convex.cloud
 - Deploy automático!
 
-### Netlify
+### 🌍 Netlify
 
 - Conecte seu repositório do Github ao Netlify
 - Configure:
@@ -69,21 +69,21 @@ Para executar como desenvolvimento:
    - Publish directory: `dist`
    - Environment variable: `VITE_CONVEX_URL`
 
-## Segurança
+## 🔒 Segurança
 
 - Autenticação obrigatória para acesso
 - Dados isolados por usuário
 - Validação de entrada 
 - Conexão segura com HTTPS
 
-## Aplicação
+## 🧩 Aplicação
 
 - Local:
    - http://localhost:5173/
 - Web:
    - https://sistema-financas-nu.vercel.app/
 
-## Funcionalidades
+## 📈 Funcionalidades
 
 - Autenticação segura com usuário/senha
 - Gerenciamento de despesas por categorias
@@ -92,7 +92,7 @@ Para executar como desenvolvimento:
 - Interface responsiva e moderna
 - Dados em tempo real
 
-## Licença
+## 📄 Licença
 
 Este projeto é privado e de uso restrito.
 

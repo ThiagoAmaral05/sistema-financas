@@ -162,7 +162,28 @@ export function ReportGenerator() {
     return config.fields.reduce((total, field) => total + (expense[field] || 0), 0);
   };
 
+  const getUniqueFields = () => {
+    if (!expenses) return [];
+    
+    const fieldsSet = new Set<string>();
+    
+    if (selectedBuilding) {
+      const config = buildingConfig[selectedBuilding as keyof typeof buildingConfig];
+      config.fields.forEach(field => fieldsSet.add(field));
+    } else {
+      expenses.forEach(expense => {
+        const config = buildingConfig[expense.buildingId as keyof typeof buildingConfig];
+        if (config) {
+          config.fields.forEach(field => fieldsSet.add(field));
+        }
+      });
+    }
+    
+    return Array.from(fieldsSet);
+  };
+
   const totals = getTotals();
+  const uniqueFields = getUniqueFields();
 
   return (
     <div className="space-y-8">
@@ -266,9 +287,11 @@ export function ReportGenerator() {
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Categoria
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Descrição
-                      </th>
+                      {uniqueFields.map(field => (
+                        <th key={field} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          {fieldLabels[field]}
+                        </th>
+                      ))}
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Total
                       </th>
@@ -277,10 +300,6 @@ export function ReportGenerator() {
                   <tbody className="bg-white divide-y divide-gray-200">
                     {expenses.map((expense) => {
                       const config = buildingConfig[expense.buildingId as keyof typeof buildingConfig];
-                      const filledFields = config?.fields.filter(field => (expense as any)[field]) || [];
-                      const description = filledFields.map(field => 
-                        `${fieldLabels[field]}: ${formatCurrency((expense as any)[field])}`
-                      ).join(', ');
 
                       return (
                         <tr key={expense._id} className="hover:bg-gray-50">
@@ -290,9 +309,11 @@ export function ReportGenerator() {
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                             {config?.name || `P${expense.buildingId}`}
                           </td>
-                          <td className="px-6 py-4 text-sm text-gray-900">
-                            {description || "Nenhum valor informado"}
-                          </td>
+                          {uniqueFields.map(field => (
+                            <td key={field} className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                              {formatCurrency((expense as any)[field])}
+                            </td>
+                          ))}
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">
                             {formatCurrency(calculateTotal(expense))}
                           </td>
@@ -302,9 +323,14 @@ export function ReportGenerator() {
                   </tbody>
                   <tfoot className="bg-green-50">
                     <tr>
-                      <td colSpan={3} className="px-6 py-4 text-sm font-bold text-gray-900">
+                      <td colSpan={2} className="px-6 py-4 text-sm font-bold text-gray-900">
                         TOTAL GERAL:
                       </td>
+                      {uniqueFields.map(field => (
+                        <td key={field} className="px-6 py-4 text-sm font-bold text-green-700">
+                          {formatCurrency((totals as any)[field] || 0)}
+                        </td>
+                      ))}
                       <td className="px-6 py-4 text-sm font-bold text-green-700">
                         {formatCurrency((totals as any).grandTotal || 0)}
                       </td>
