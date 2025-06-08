@@ -1,117 +1,98 @@
 # Sistema de Controle Financeiro
 
-Um sistema completo para gerenciamento de despesas e finanças pessoais, construído com React, Convex e TailwindCSS.
+Um sistema completo para gerenciamento de despesas e finanças pessoais.
 
-## 🚀 Funcionalidades
+## 📚 Sumário
+-----------------------------------------------------------------------------------
 
-- ✅ Autenticação segura com usuário/senha
-- ✅ Gerenciamento de despesas por categorias
-- ✅ Relatórios detalhados por período
-- ✅ Exportação para CSV
-- ✅ Interface responsiva e moderna
-- ✅ Dados em tempo real
+- [🚀 Sobre o Projeto](#sobre-o-projeto)
+- [⚙️ Como Utilizar](#como-utilizar)
+- [📦 Criar Ambiente](#criar-ambiente)
+- [🛠️ Pré-requisitos](#pré-requisitos)
+- [💻 No Terminal](#no-terminal)
+- [▶️ Executar o Projeto](#executar-o-projeto)
+- [🌐 Deploy para Produção](#deploy-para-produção)
+  - [▲ Vercel](#vercel)
+  - [🌍 Netlify](#netlify)
+- [🔒 Segurança](#segurança)
+- [🧩 Aplicação](#aplicação)
+- [📈 Funcionalidades](#funcionalidades)
+- [📄 Licença](#licença)
 
-## 📋 Pré-requisitos
+## Sobre o Projeto
 
-- Node.js 18+ 
-- NPM ou Yarn
-- Conta no Convex (gratuita)
+## Como Utilizar
 
-## 🛠️ Instalação e Configuração
+## Criar Ambiente
 
-### 1. Clone o repositório
-```bash
-git clone <seu-repositorio>
-cd controle-financas
-```
+- Crie a pasta do projeto
+- Crie um ambiente virtual
 
-### 2. Instale as dependências
-```bash
-npm install
-```
+## Pré-requisitos
 
-### 3. Configure o Convex
+- Node.js 
+- NPM 
+- Conta no Convex 
 
-1. Crie uma conta em [https://convex.dev](https://convex.dev)
-2. Instale a CLI do Convex:
-```bash
-npm install -g convex
-```
+## No Terminal
+Execute os comandos abaixo no terminal:
 
-3. Faça login no Convex:
-```bash
-npx convex login
-```
+- node -v
+- Get-ExecutionPolicy
+- Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
+- Get-ExecutionPolicy
+- npm -v
+- npm install -g convex
+- convex --version
+- npm install npm-run-all
 
-4. Inicialize o projeto:
-```bash
-npx convex dev
-```
+## Executar o Projeto
+Para executar como desenvolvimento:
 
-### 4. Configure as variáveis de ambiente
+- npm install npm-run-all
+- npm run dev
 
-1. Copie o arquivo de exemplo:
-```bash
-cp .env.example .env.local
-```
+## Deploy para Produção
 
-2. Edite `.env.local` e adicione sua URL do Convex:
-```
-VITE_CONVEX_URL=https://your-deployment-url.convex.cloud
-```
+### Vercel
 
-### 5. Execute o projeto
+- Conecte seu repositório do Github ao Vercel
+- Configure a variável de ambiente: 
+   - VITE_CONVEX_URL / https://your-deployment-url.convex.cloud
+- Deploy automático!
 
-Para desenvolvimento:
-```bash
-npm run dev
-```
+### Netlify
 
-Para produção:
-```bash
-npm run build
-npm run preview
-```
-
-## 🌐 Deploy para Produção
-
-### Opção 1: Vercel (Recomendado)
-
-1. Conecte seu repositório ao Vercel
-2. Configure a variável de ambiente `VITE_CONVEX_URL`
-3. Deploy automático!
-
-### Opção 2: Netlify
-
-1. Conecte seu repositório ao Netlify
-2. Configure:
+- Conecte seu repositório do Github ao Netlify
+- Configure:
    - Build command: `npm run build`
    - Publish directory: `dist`
    - Environment variable: `VITE_CONVEX_URL`
 
-### Opção 3: Outros provedores
-
-Para qualquer provedor que suporte sites estáticos:
-1. Execute `npm run build`
-2. Faça upload da pasta `dist`
-3. Configure a variável `VITE_CONVEX_URL`
-
-## 🔐 Segurança
+## Segurança
 
 - Autenticação obrigatória para acesso
 - Dados isolados por usuário
-- Validação de entrada em todas as operações
+- Validação de entrada 
 - Conexão segura com HTTPS
 
-## 🆘 Suporte
+## Aplicação
 
-Se encontrar problemas:
+- Local:
+   - http://localhost:5173/
+- Web:
+   - https://sistema-financas-nu.vercel.app/
 
-1. Verifique se a URL do Convex está correta
-2. Confirme que o deployment do Convex está ativo
-3. Verifique o console do navegador para erros
-4. Teste a conexão com o Convex Dashboard
+## Funcionalidades
 
-## 📝 Licença
+- Autenticação segura com usuário/senha
+- Gerenciamento de despesas por categorias
+- Relatórios detalhados por período
+- Exportação para CSV
+- Interface responsiva e moderna
+- Dados em tempo real
+
+## Licença
 
 Este projeto é privado e de uso restrito.
+
