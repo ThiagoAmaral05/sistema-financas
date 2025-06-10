@@ -36,12 +36,18 @@ export function ReportGenerator() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [selectedBuilding, setSelectedBuilding] = useState<number | undefined>(undefined);
+  const [selectedStatus, setSelectedStatus] = useState<"pago" | "à pagar" | undefined>(undefined);
   const [showReport, setShowReport] = useState(false);
 
   const expenses = useQuery(
     api.expenses.getExpensesByPeriod,
     showReport && startDate && endDate
-      ? { startDate, endDate, buildingId: selectedBuilding }
+      ? { 
+          startDate, 
+          endDate, 
+          buildingId: selectedBuilding,
+          status: selectedStatus
+        }
       : "skip"
   );
 
@@ -93,7 +99,7 @@ export function ReportGenerator() {
     };
 
     // Cabeçalhos
-    const headers = ['Data', 'Categoria', ...fieldsToInclude.map(field => fieldLabels[field]), 'Total'];
+    const headers = ['Data', 'Categoria', ...fieldsToInclude.map(field => fieldLabels[field]), 'Total', 'Status'];
     
     // Dados
     const rows = expenses.map(expense => {
@@ -111,7 +117,8 @@ export function ReportGenerator() {
         escapeCSV(formattedDate),
         escapeCSV(buildingName),
         ...values.map(v => escapeCSV(v)),
-        escapeCSV(total.toFixed(2).replace('.', ','))
+        escapeCSV(total.toFixed(2).replace('.', ',')),
+        escapeCSV(expense.status || "à pagar")
       ];
     });
 
@@ -192,7 +199,7 @@ export function ReportGenerator() {
           Gerador de Relatórios
         </h2>
         <p className="text-gray-600">
-          Gere planilhas com as despesas por período
+          Gere planilhas com suas despesas por período
         </p>
       </div>
 
@@ -202,7 +209,7 @@ export function ReportGenerator() {
           Filtros do Relatório
         </h3>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Data Inicial
@@ -244,6 +251,21 @@ export function ReportGenerator() {
               ))}
             </select>
           </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Status (Opcional)
+            </label>
+            <select
+              value={selectedStatus || ""}
+              onChange={(e) => setSelectedStatus(e.target.value ? e.target.value as "pago" | "à pagar" : undefined)}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+            >
+              <option value="">Todos os status</option>
+              <option value="pago">Pago</option>
+              <option value="à pagar">À Pagar</option>
+            </select>
+          </div>
         </div>
 
         <div className="mt-6 flex gap-4">
@@ -272,6 +294,7 @@ export function ReportGenerator() {
             <h3 className="text-lg font-semibold text-gray-800">
               Relatório de {formatDate(startDate)} até {formatDate(endDate)}
               {selectedBuilding && ` - ${buildingConfig[selectedBuilding as keyof typeof buildingConfig]?.name}`}
+              {selectedStatus && ` - ${selectedStatus === "pago" ? "Pagos" : "À Pagar"}`}
             </h3>
           </div>
           
@@ -295,6 +318,9 @@ export function ReportGenerator() {
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Total
                       </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Status
+                      </th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
@@ -317,6 +343,15 @@ export function ReportGenerator() {
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">
                             {formatCurrency(calculateTotal(expense))}
                           </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm">
+                            <span className={`px-2 py-1 text-xs rounded ${
+                              (expense.status || "à pagar") === "pago" 
+                                ? "bg-green-100 text-green-800" 
+                                : "bg-red-100 text-red-800"
+                            }`}>
+                              {expense.status || "à pagar"}
+                            </span>
+                          </td>
                         </tr>
                       );
                     })}
@@ -334,6 +369,7 @@ export function ReportGenerator() {
                       <td className="px-6 py-4 text-sm font-bold text-green-700">
                         {formatCurrency((totals as any).grandTotal || 0)}
                       </td>
+                      <td className="px-6 py-4"></td>
                     </tr>
                   </tfoot>
                 </table>

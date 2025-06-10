@@ -77,11 +77,13 @@ const buildingConfig = {
 export function BuildingManager({ buildingId }: BuildingManagerProps) {
   const [date, setDate] = useState("");
   const [formData, setFormData] = useState<Record<string, string>>({});
+  const [status, setStatus] = useState<"pago" | "à pagar">("à pagar");
 
   const config = buildingConfig[buildingId as keyof typeof buildingConfig];
   const expenses = useQuery(api.expenses.getExpensesByBuilding, { buildingId });
   const addExpense = useMutation(api.expenses.addExpense);
   const deleteExpense = useMutation(api.expenses.deleteExpense);
+  const updateExpenseStatus = useMutation(api.expenses.updateExpenseStatus);
 
   const handleFieldChange = (fieldKey: string, value: string) => {
     setFormData(prev => ({ ...prev, [fieldKey]: value }));
@@ -106,11 +108,13 @@ export function BuildingManager({ buildingId }: BuildingManagerProps) {
       const expenseData: any = {
         buildingId,
         date,
+        status,
       };
 
       // Adicionar apenas os campos preenchidos
       config.fields.forEach(field => {
         const value = formData[field.key];
+        
         if (value && value.trim() !== "") {
           const numValue = parseFloat(value);
           if (!isNaN(numValue) && numValue >= 0) {
@@ -123,10 +127,16 @@ export function BuildingManager({ buildingId }: BuildingManagerProps) {
 
       setDate("");
       setFormData({});
+      setStatus("à pagar");
       
       toast.success("Despesa adicionada com sucesso!");
     } catch (error: any) {
-      toast.error(error.message || "Erro ao adicionar despesa");
+      if (error.message.includes("Sessão expirada")) {
+        toast.error("Sua sessão expirou. Faça login novamente.");
+        window.location.reload();
+      } else {
+        toast.error(error.message || "Erro ao adicionar despesa");
+      }
     }
   };
 
@@ -135,8 +145,30 @@ export function BuildingManager({ buildingId }: BuildingManagerProps) {
       try {
         await deleteExpense({ id: id as any });
         toast.success("Despesa excluída com sucesso!");
-      } catch (error) {
-        toast.error("Erro ao excluir despesa");
+      } catch (error: any) {
+        if (error.message.includes("Sessão expirada")) {
+          toast.error("Sua sessão expirou. Faça login novamente.");
+          window.location.reload();
+        } else {
+          toast.error("Erro ao excluir despesa");
+        }
+      }
+    }
+  };
+
+  const handleStatusUpdate = async (expenseId: string, newStatus: "pago" | "à pagar") => {
+    try {
+      await updateExpenseStatus({
+        id: expenseId as any,
+        status: newStatus
+      });
+      toast.success("Status atualizado com sucesso!");
+    } catch (error: any) {
+      if (error.message.includes("Sessão expirada")) {
+        toast.error("Sua sessão expirou. Faça login novamente.");
+        window.location.reload();
+      } else {
+        toast.error("Erro ao atualizar status");
       }
     }
   };
@@ -172,6 +204,9 @@ export function BuildingManager({ buildingId }: BuildingManagerProps) {
           {config.name}
         </h2>
         <p className="text-gray-600">Gerenciar contas e despesas</p>
+        <p className="text-sm text-blue-600 mt-2">
+          ⚠️ Você vê apenas suas próprias despesas
+        </p>
       </div>
 
       {/* Formulário */}
@@ -197,9 +232,24 @@ export function BuildingManager({ buildingId }: BuildingManagerProps) {
             />
           </div>
 
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Status do Pagamento *
+            </label>
+            <select
+              value={status}
+              onChange={(e) => setStatus(e.target.value as "pago" | "à pagar")}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+              required
+            >
+              <option value="à pagar">À Pagar</option>
+              <option value="pago">Pago</option>
+            </select>
+          </div>
+
           {config.fields.map((field) => (
-            <div key={field.key}>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+            <div key={field.key} className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">
                 {field.label} - Opcional
               </label>
               <input
@@ -228,7 +278,7 @@ export function BuildingManager({ buildingId }: BuildingManagerProps) {
       <div className="bg-white rounded-xl shadow-lg border border-gray-200">
         <div className="p-6 border-b border-gray-200">
           <h3 className="text-lg font-semibold text-gray-800">
-            Histórico de Despesas
+            Histórico de Despesas (Suas despesas)
           </h3>
         </div>
         
@@ -249,6 +299,9 @@ export function BuildingManager({ buildingId }: BuildingManagerProps) {
                     Total
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Status
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Ações
                   </th>
                 </tr>
@@ -266,6 +319,20 @@ export function BuildingManager({ buildingId }: BuildingManagerProps) {
                     ))}
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">
                       {formatCurrency(calculateTotal(expense))}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm">
+                      <select
+                        value={expense.status || "à pagar"}
+                        onChange={(e) => handleStatusUpdate(expense._id, e.target.value as "pago" | "à pagar")}
+                        className={`text-xs px-2 py-1 rounded border ${
+                          (expense.status || "à pagar") === "pago" 
+                            ? "bg-green-100 text-green-800 border-green-300" 
+                            : "bg-red-100 text-red-800 border-red-300"
+                        }`}
+                      >
+                        <option value="à pagar">À Pagar</option>
+                        <option value="pago">Pago</option>
+                      </select>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       <button

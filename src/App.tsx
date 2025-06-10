@@ -3,10 +3,29 @@ import { api } from "../convex/_generated/api";
 import { SignInForm } from "./SignInForm";
 import { SignOutButton } from "./SignOutButton";
 import { PasswordChange } from "./PasswordChange";
+import { PasswordViewer } from "./PasswordViewer";
 import { Toaster } from "sonner";
 import { Dashboard } from "./Dashboard";
+import { SessionManager } from "./SessionManager";
+import { useEffect } from "react";
+import { useMutation } from "convex/react";
 
 export default function App() {
+  const updateSession = useMutation(api.sessions.updateSession);
+
+  // Atualizar sessão a cada 2 minutos
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      try {
+        await updateSession();
+      } catch (error) {
+        // Ignorar erros silenciosamente
+      }
+    }, 2 * 60 * 1000); // 2 minutos
+
+    return () => clearInterval(interval);
+  }, [updateSession]);
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
       <header className="sticky top-0 z-10 bg-white shadow-md h-16 flex justify-between items-center px-6">
@@ -17,7 +36,11 @@ export default function App() {
           <h2 className="text-xl font-bold text-gray-800">Controle de Finanças</h2>
         </div>
         <Authenticated>
-          <SignOutButton />
+          <div className="flex items-center gap-4">
+            <SessionManager />
+            <PasswordViewer />
+            <SignOutButton />
+          </div>
         </Authenticated>
       </header>
       
@@ -45,20 +68,10 @@ function Content() {
   return (
     <div className="flex flex-col gap-8">
       <Authenticated>
-        <div className="flex justify-between items-center mb-6">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-800">
-              Bem-vindo ao Sistema
-            </h1>
-            <p className="text-gray-600">
-              Usuário: {loggedInUser?.email}
-            </p>
-          </div>
-        </div>
         <Dashboard />
       </Authenticated>
       
-       <Unauthenticated>
+      <Unauthenticated>
         <div className="max-w-md mx-auto">
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-gray-800 mb-4">
@@ -66,6 +79,12 @@ function Content() {
             </h1>
             <p className="text-lg text-gray-600">
               Acesso restrito - Faça login para continuar
+            </p>
+            <p className="text-sm text-blue-600 mt-2">
+              ⏰ Sessão expira em 10 minutos de inatividade
+            </p>
+            <p className="text-sm text-red-600 mt-1">
+              🔓 Senhas armazenadas em texto plano
             </p>
           </div>
           <SignInForm />
