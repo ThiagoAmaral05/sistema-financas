@@ -3,66 +3,61 @@ import { v } from "convex/values";
 import { authTables } from "@convex-dev/auth/server";
 
 const applicationTables = {
-  expenses: defineTable({
-    buildingId: v.number(), 
+  transactions: defineTable({
+    userId: v.id("users"),
+    description: v.string(),
+    amount: v.number(),
+    type: v.union(v.literal("income"), v.literal("expense")),
+    category: v.string(),
     date: v.string(),
-    condominium: v.optional(v.number()),
-    electricity: v.optional(v.number()),
-    water: v.optional(v.number()),
-    internet: v.optional(v.number()),
-    iptu: v.optional(v.number()),
-    gas: v.optional(v.number()),
-    patrimonial: v.optional(v.number()),
-    facility: v.optional(v.number()),
-    mjb: v.optional(v.number()),
+  })
+    .index("by_user", ["userId"])
+    .index("by_user_and_type", ["userId", "type"])
+    .index("by_user_and_date", ["userId", "date"]),
+
+  categories: defineTable({
+    userId: v.id("users"),
+    name: v.string(),
+    type: v.union(v.literal("income"), v.literal("expense")),
+    color: v.string(),
+  })
+    .index("by_user", ["userId"])
+    .index("by_user_and_type", ["userId", "type"]),
+
+  propertyExpenses: defineTable({
+    userId: v.id("users"),
+    propertyName: v.string(),
+    date: v.string(),
+    status: v.optional(v.union(v.literal("pago"), v.literal("a_pagar"))),
+    // Campos dinâmicos baseados na propriedade
     condominio: v.optional(v.number()),
+    luz: v.optional(v.number()),
+    agua: v.optional(v.number()),
+    internet: v.optional(v.number()),
+    gas: v.optional(v.number()),
+    iptu: v.optional(v.number()),
+    carro1: v.optional(v.number()),
+    carro2: v.optional(v.number()),
+    carro3: v.optional(v.number()),
     faculdade: v.optional(v.number()),
     aluguel: v.optional(v.number()),
     fiancaMensal: v.optional(v.number()),
+    josue: v.optional(v.number()),
+    mariana: v.optional(v.number()),
+    bia: v.optional(v.number()),
+    caua: v.optional(v.number()),
+    colinaB1: v.optional(v.number()),
+    portoTrapiche: v.optional(v.number()),
+    dAzul: v.optional(v.number()),
+    praiaDoForte: v.optional(v.number()),
+    rcMouraFacility: v.optional(v.number()),
+    lanchaRole: v.optional(v.number()),
+    lanchaCaua: v.optional(v.number()),
     baiaMarina: v.optional(v.number()),
-    seguroVida: v.optional(v.number()),
-    status: v.optional(v.union(v.literal("pago"), v.literal("à pagar"))),
-    // Status antigos (para migração - serão removidos depois)
-    condominiumStatus: v.optional(v.union(v.literal("pago"), v.literal("à pagar"))),
-    electricityStatus: v.optional(v.union(v.literal("pago"), v.literal("à pagar"))),
-    waterStatus: v.optional(v.union(v.literal("pago"), v.literal("à pagar"))),
-    internetStatus: v.optional(v.union(v.literal("pago"), v.literal("à pagar"))),
-    iptuStatus: v.optional(v.union(v.literal("pago"), v.literal("à pagar"))),
-    gasStatus: v.optional(v.union(v.literal("pago"), v.literal("à pagar"))),
-    patrimonialStatus: v.optional(v.union(v.literal("pago"), v.literal("à pagar"))),
-    facilityStatus: v.optional(v.union(v.literal("pago"), v.literal("à pagar"))),
-    mjdStatus: v.optional(v.union(v.literal("pago"), v.literal("à pagar"))),
-    consominioStatus: v.optional(v.union(v.literal("pago"), v.literal("à pagar"))),
-    faculdadeStatus: v.optional(v.union(v.literal("pago"), v.literal("à pagar"))),
-    aluguelStatus: v.optional(v.union(v.literal("pago"), v.literal("à pagar"))),
-    fiancaMensalStatus: v.optional(v.union(v.literal("pago"), v.literal("à pagar"))),
-    baiaMarinaStatus: v.optional(v.union(v.literal("pago"), v.literal("à pagar"))),
-    seguroVidaStatus: v.optional(v.union(v.literal("pago"), v.literal("à pagar"))),
-    userId: v.id("users"),
-    createdAt: v.optional(v.number()),
-  }).index("by_building", ["buildingId"])
+  })
     .index("by_user", ["userId"])
-    .index("by_building_and_date", ["buildingId", "date"])
-    .index("by_created_at", ["createdAt"])
-    .index("by_user_and_building", ["userId", "buildingId"]),
-  
-  // Tabela para controle de sessões
-  sessions: defineTable({
-    userId: v.id("users"),
-    lastActivity: v.number(),
-    isActive: v.boolean(),
-  }).index("by_user", ["userId"])
-    .index("by_last_activity", ["lastActivity"]),
-    
-  // Tabela para senhas não criptografadas
-  userPasswords: defineTable({
-    userId: v.id("users"),
-    email: v.string(),
-    password: v.string(), // Senha em texto plano
-    createdAt: v.number(),
-    updatedAt: v.number(),
-  }).index("by_user", ["userId"])
-    .index("by_email", ["email"]),
+    .index("by_user_and_property", ["userId", "propertyName"])
+    .index("by_user_and_date", ["userId", "date"]),
 };
 
 export default defineSchema({

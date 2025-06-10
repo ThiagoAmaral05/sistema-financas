@@ -3,51 +3,21 @@ import { api } from "../convex/_generated/api";
 import { SignInForm } from "./SignInForm";
 import { SignOutButton } from "./SignOutButton";
 import { PasswordChange } from "./PasswordChange";
-import { PasswordViewer } from "./PasswordViewer";
 import { Toaster } from "sonner";
-import { Dashboard } from "./Dashboard";
-import { SessionManager } from "./SessionManager";
-import { useEffect } from "react";
-import { useMutation } from "convex/react";
+import { ControlPanel } from "./components/ControlPanel";
+import { ReportPanel } from "./components/ReportPanel";
+import { PropertyExpenseForm } from "./components/PropertyExpenseForm";
+import { useState } from "react";
 
 export default function App() {
-  const updateSession = useMutation(api.sessions.updateSession);
-
-  // Atualizar sessão a cada 2 minutos
-  useEffect(() => {
-    const interval = setInterval(async () => {
-      try {
-        await updateSession();
-      } catch (error) {
-        // Ignorar erros silenciosamente
-      }
-    }, 2 * 60 * 1000); // 2 minutos
-
-    return () => clearInterval(interval);
-  }, [updateSession]);
-
   return (
-    <div className="min-h-screen flex flex-col bg-gray-100">
-      <header className="sticky top-0 z-10 bg-white shadow-md h-16 flex justify-between items-center px-6">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-lg">💰</span>
-          </div>
-          <h2 className="text-xl font-bold text-gray-800">Controle de Finanças</h2>
-        </div>
-        <Authenticated>
-          <div className="flex items-center gap-4">
-            <SessionManager />
-            <PasswordViewer />
-            <SignOutButton />
-          </div>
-        </Authenticated>
+    <div className="min-h-screen flex flex-col bg-gray-50">
+      <header className="sticky top-0 z-10 bg-white/80 backdrop-blur-sm h-16 flex justify-between items-center border-b shadow-sm px-4">
+        <h2 className="text-xl font-semibold text-green-600">💰 Sistema Financeiro</h2>
+        <SignOutButton />
       </header>
-      
-      <main className="flex-1 flex items-center justify-center p-8">
-        <div className="w-full max-w-6xl mx-auto">
-          <Content />
-        </div>
+      <main className="flex-1 p-4">
+        <Content />
       </main>
       <Toaster />
     </div>
@@ -56,36 +26,70 @@ export default function App() {
 
 function Content() {
   const loggedInUser = useQuery(api.auth.loggedInUser);
+  const [activeTab, setActiveTab] = useState<"controle" | "relatorio">("controle");
+  const [selectedProperty, setSelectedProperty] = useState<string | null>(null);
 
   if (loggedInUser === undefined) {
     return (
-      <div className="flex justify-center items-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-green-600 border-t-transparent"></div>
+      <div className="flex justify-center items-center min-h-[400px]">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
       </div>
     );
   }
 
+  if (selectedProperty) {
+    return (
+      <PropertyExpenseForm 
+        propertyName={selectedProperty} 
+        onBack={() => setSelectedProperty(null)} 
+      />
+    );
+  }
+
   return (
-    <div className="flex flex-col gap-8">
+    <div className="max-w-6xl mx-auto">
       <Authenticated>
-        <Dashboard />
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            Bem-Vindo, {loggedInUser?.name || loggedInUser?.email || "Usuário"}!
+          </h1>
+          <p className="text-gray-600">Gerencie suas despesas de forma simples e eficiente. Registre suas movimentações!  </p>
+        </div>
+
+        <nav className="flex space-x-1 mb-6 bg-white rounded-lg p-1 shadow-sm">
+          <button
+            onClick={() => setActiveTab("controle")}
+            className={`px-4 py-2 rounded-md font-medium transition-colors ${
+              activeTab === "controle"
+                ? "bg-green-600 text-white"
+                : "text-gray-600 hover:text-gray-900"
+            }`}
+          >
+            Controle
+          </button>
+          <button
+            onClick={() => setActiveTab("relatorio")}
+            className={`px-4 py-2 rounded-md font-medium transition-colors ${
+              activeTab === "relatorio"
+                ? "bg-green-600 text-white"
+                : "text-gray-600 hover:text-gray-900"
+            }`}
+          >
+            Relatório
+          </button>
+        </nav>
+
+        {activeTab === "controle" && (
+          <ControlPanel onPropertySelect={setSelectedProperty} />
+        )}
+        {activeTab === "relatorio" && <ReportPanel />}
       </Authenticated>
       
       <Unauthenticated>
-        <div className="max-w-md mx-auto">
+        <div className="max-w-md mx-auto mt-20">
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-gray-800 mb-4">
-              Sistema de Controle Financeiro
-            </h1>
-            <p className="text-lg text-gray-600">
-              Acesso restrito - Faça login para continuar
-            </p>
-            <p className="text-sm text-blue-600 mt-2">
-              ⏰ Sessão expira em 10 minutos de inatividade
-            </p>
-            <p className="text-sm text-red-600 mt-1">
-              🔓 Senhas armazenadas em texto plano
-            </p>
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">Sistema Financeiro</h1>
+            <p className="text-xl text-gray-600">Faça login para gerenciar suas finanças</p>
           </div>
           <SignInForm />
           
