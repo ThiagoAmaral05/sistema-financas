@@ -43,7 +43,7 @@ export function ControlPanel({ onPropertySelect }: ControlPanelProps) {
         {Object.entries(groupedProperties).map(([category, items]) => (
           <div key={category} className="mb-8">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">{category}</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="bg-white border-2 border-green-600 text-green-700 p-6 rounded-xl hover:bg-green-50 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105">
               {items.map((property) => (
                 <button
                   key={property.name}
