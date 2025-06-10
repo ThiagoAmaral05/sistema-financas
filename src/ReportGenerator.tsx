@@ -29,7 +29,7 @@ const fieldLabels: Record<string, string> = {
   aluguel: "Aluguel",
   fiancaMensal: "Fiança Mensal",
   baiaMarina: "Baia Marina",
-  seguroVida: "Seguro de Vida Famailia Moura"
+  seguroVida: "Seguro de Vida Familia Moura"
 };
 
 export function ReportGenerator() {
