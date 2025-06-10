@@ -4,9 +4,9 @@ import { SignInForm } from "./SignInForm";
 import { SignOutButton } from "./SignOutButton";
 import { PasswordChange } from "./PasswordChange";
 import { Toaster } from "sonner";
-import { ControlPanel } from "./components/ControlPanel";
-import { ReportPanel } from "./components/ReportPanel";
-import { PropertyExpenseForm } from "./components/PropertyExpenseForm";
+import { ControlPanel } from "./componentes/ControlPanel";
+import { ReportPanel } from "./componentes/ReportPanel";
+import { PropertyExpenseForm } from "./componentes/PropertyExpenseForm";
 import { useState } from "react";
 
 export default function App() {
