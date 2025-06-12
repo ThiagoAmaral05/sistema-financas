@@ -53,7 +53,7 @@ function Content() {
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
             Bem-Vindo, {loggedInUser?.name || loggedInUser?.email || "Usuário"}!
           </h1>
-          <p className="text-gray-600">Gerencie suas despesas de forma simples e eficiente. Registre suas movimentações!  </p>
+          <p className="text-lg font-semibold text-gray-800 mb-6">Gerencie suas despesas de forma simples e eficiente. Registre suas movimentações!  </p>
         </div>
 
         <nav className="flex space-x-1 mb-6 bg-white rounded-lg p-1 shadow-sm">
