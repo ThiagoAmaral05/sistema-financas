@@ -1,3 +1,7 @@
+import { MdLocationCity } from "react-icons/md"; // ícone de prédio
+import { BsCalculator } from "react-icons/bs"; // ícone de calculadora
+import { FaCar, FaCoins, FaUsers, FaShieldAlt, FaPuzzlePiece } from "react-icons/fa"; // restante dos ícones
+
 interface ControlPanelProps {
   onPropertySelect: (property: string) => void;
 }
@@ -33,25 +37,28 @@ export function ControlPanel({ onPropertySelect }: ControlPanelProps) {
   }, {} as Record<string, typeof properties>);
 
   return (
-    <div className="space-y-8">
-      <div className="bg-white rounded-lg shadow-sm border p-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Painel de Controle</h2>
+    <div className="space-y-12">
+      <div className="bg-white rounded-xl shadow-sm border p-8">
+        <div className="flex items-center gap-2 text-green-700 font-semibold text-xl mb-6">
+          <MdLocationCity className="text-2xl" />
+          <h2 className="text-2xl font-bold text-gray-900">Painel de Controle</h2>
+        </div>
         <p className="text-gray-600 mb-8">
           Selecione uma categoria para gerenciar as despesas específicas de cada propriedade.
         </p>
 
         {Object.entries(groupedProperties).map(([category, items]) => (
-          <div key={category} className="mb-8">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">{category}</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div key={category} className="mb-12 bg-gray-50 p-6 rounded-md shadow-inner">
+            <h3 className="text-lg font-semibold text-gray-800 mb-6">{category}</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {items.map((property) => (
                 <button
                   key={property.name}
                   onClick={() => onPropertySelect(property.name)}
-                  className="bg-white border border-green-700 text-green-800 p-6 rounded-lg hover:bg-green-50 transition-shadow shadow-sm hover:shadow-md"
+                  className="bg-white border border-green-700 text-green-800 p-6 rounded-xl hover:bg-green-50 hover:shadow-lg hover:scale-[1.02] transition-all duration-200"
                 >
                   <div className="text-center">
-                    <div className="text-2xl mb-2">🏢</div>
+                    <MdLocationCity className="text-3xl mb-2 mx-auto text-green-700" />
                     <h4 className="font-medium text-sm">{property.name}</h4>
                   </div>
                 </button>
