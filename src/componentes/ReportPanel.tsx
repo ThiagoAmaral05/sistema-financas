@@ -10,7 +10,7 @@ const propertyFields = {
   "D'Azul": ["condominio", "luz", "gas", "iptu"],
   "Praia do Forte": ["condominio", "luz"],
   "Hangar": ["condominio", "luz", "internet"],
-  "Andre Contador": ["condominio", "luz", "internet"],
+  "Andre Contador": ["patrimonial", "mouraFacility", "mjb"],
   "Automoveis": ["carro1", "carro2", "carro3"],
   "Despesas Cauã": ["condominio", "faculdade", "aluguel", "fiancaMensal"],
   "Seguro de Vida Familia Moura": ["josue", "mariana", "bia", "caua"],
@@ -25,6 +25,9 @@ const fieldLabels = {
   internet: "Internet",
   gas: "Gás",
   iptu: "IPTU",
+  patrimonial: "Patrimonial",
+  mouraFacility: "Moura Facility",
+  mjb: "MJB",
   carro1: "Carro 1",
   carro2: "Carro 2",
   carro3: "Carro 3",
@@ -294,7 +297,7 @@ export function ReportPanel() {
               disabled={!shouldShowData}
               className="w-full bg-green-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-green-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
             >
-              📊 Gerar Planilha
+              Gerar Planilha
             </button>
           </div>
         </div>

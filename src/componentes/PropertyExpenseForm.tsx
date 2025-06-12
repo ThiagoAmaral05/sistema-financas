@@ -36,9 +36,9 @@ const propertyFields = {
     { key: "internet", label: "Internet" },
   ],
   "Andre Contador": [
-    { key: "condominio", label: "Condomínio" },
-    { key: "luz", label: "Luz" },
-    { key: "internet", label: "Internet" },
+    { key: "patrimonial", label: "Patrimonial" },
+    { key: "mouraFacility", label: "Moura Facility" },
+    { key: "mjb", label: "MJB" },
   ],
   "Automoveis": [
     { key: "carro1", label: "Carro 1" },
