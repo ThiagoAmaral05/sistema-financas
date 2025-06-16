@@ -147,8 +147,17 @@ export function ReportPanel() {
     const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement("a");
     const url = URL.createObjectURL(blob);
+    
+    // Formatar as datas para o nome do arquivo
+    const formatDateForFilename = (dateStr: string) => {
+      return new Date(dateStr).toLocaleDateString('pt-BR').replace(/\//g, '-');
+    };
+    
+    const startDateFormatted = formatDateForFilename(startDate);
+    const endDateFormatted = formatDateForFilename(endDate);
+    
     link.setAttribute("href", url);
-    link.setAttribute("download", `relatorio_despesas_${Date.now()}.csv`);
+    link.setAttribute("download", `relatorio_despesas_${startDateFormatted}_a_${endDateFormatted}.csv`);
     link.style.visibility = 'hidden';
     document.body.appendChild(link);
     link.click();
