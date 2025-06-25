@@ -36,7 +36,7 @@ export function SignInForm() {
           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
           type="email"
           name="email"
-          placeholder="Email do Administrador"
+          placeholder="Usuário"
           required
         />
         <input
@@ -47,7 +47,7 @@ export function SignInForm() {
           required
         />
         <button className="auth-button" type="submit" disabled={submitting}>
-          {flow === "signIn" ? "Sign in" : "Sign up"}
+          {flow === "signIn" ? "Entrar" : "Registrar"}
         </button>
         <div className="text-center text-sm text-secondary">
           <span>
@@ -60,12 +60,9 @@ export function SignInForm() {
             className="text-primary hover:text-primary-hover hover:underline font-medium cursor-pointer"
             onClick={() => setFlow(flow === "signIn" ? "signUp" : "signIn")}
           >
-            {flow === "signIn" ? "Sign up instead" : "Sign in instead"}
+            {flow === "signIn" ? "Registrar-se" : "Entrar"}
           </button>
         </div>
-        <button className="w-full bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed" type="submit" disabled={submitting}>
-          {submitting ? "Entrando..." : "Entrar"}
-        </button>
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mt-4">
           <div className="flex items-center">
             <div className="text-yellow-600 mr-3">⚠️</div>
