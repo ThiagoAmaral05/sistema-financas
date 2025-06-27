@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Authenticated, Unauthenticated, useQuery } from "convex/react";
 import { api } from "../convex/_generated/api";
 import { SignInForm } from "./SignInForm";
@@ -8,15 +9,19 @@ import { Toaster } from "sonner";
 import { ControlPanel } from "./componentes/ControlPanel";
 import { ReportPanel } from "./componentes/ReportPanel";
 import { PropertyExpenseForm } from "./componentes/PropertyExpenseForm";
-import { useState, useEffect } from "react";
 
 export default function App() {
   const [showWelcome, setShowWelcome] = useState(true);
 
-  // Reset to welcome screen whenever the component mounts (page refresh/new visit)
+  // Sempre mostrar tela inicial ao carregar a página
   useEffect(() => {
     setShowWelcome(true);
   }, []);
+
+  // Mostra WelcomeScreen antes de qualquer outra coisa
+  if (showWelcome) {
+    return <WelcomeScreen onContinue={() => setShowWelcome(false)} />;
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
