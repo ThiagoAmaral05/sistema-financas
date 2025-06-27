@@ -41,9 +41,12 @@ const propertyFields = {
     { key: "mjb", label: "MJB" },
   ],
   "Automoveis": [
-    { key: "carro1", label: "Carro 1" },
-    { key: "carro2", label: "Carro 2" },
-    { key: "carro3", label: "Carro 3" },
+    { key: "rangerSport", label: "Ranger SPORT" },
+    { key: "bmwX3", label: "BMW X3" },
+    { key: "bmwX1", label: "BMW X1" },
+    { key: "nivus", label: "NIVUS" },
+    { key: "tCross", label: "T-CROSS" },
+    { key: "rangerEvoque", label: "RANGER EVOQUE" },
   ],
   "Despesas Cauã": [
     { key: "condominio", label: "Condomínio" },
