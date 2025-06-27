@@ -11,9 +11,9 @@ export function WelcomeScreen({ onContinue }: WelcomeScreenProps) {
   return (
     <div className="min-h-screen flex items-center justify-center p-8 relative overflow-hidden">
       {/* Background Animation */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800">
+      <div className="absolute inset-0 bg-gradient-to-br from-[#0E3B25] via-[#196B45] to-[#8DCB9A]">
         <div className="absolute inset-0 bg-black/20"></div>
-        <div className="absolute top-0 left-0 w-full h-full">
+        <div className="aboslute top-0 left-0 w-full h-full">
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
           <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-blue-300/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
           <div className="absolute top-1/2 right-1/3 w-64 h-64 bg-indigo-300/15 rounded-full blur-3xl animate-pulse delay-2000"></div>
@@ -45,7 +45,7 @@ export function WelcomeScreen({ onContinue }: WelcomeScreenProps) {
           
           <div className="space-y-4">
             <p className="text-xl md:text-2xl font-light text-blue-100">
-              Bem-vindo ao futuro a sua gestão financeira
+              Bem-vindo a sua gestão financeira
             </p>
             <p className="text-lg text-blue-200/80 max-w-lg mx-auto leading-relaxed">
               Uma plataforma completa e moderna para controle e gerenciamento de todos as suas dispesas
@@ -79,15 +79,6 @@ export function WelcomeScreen({ onContinue }: WelcomeScreenProps) {
             >
               Continuar para Login
             </button>
-          </div>
-        </div>
-
-        {/* Loading indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
-          <div className="flex space-x-2">
-            <div className="w-2 h-2 bg-white/60 rounded-full animate-bounce"></div>
-            <div className="w-2 h-2 bg-white/60 rounded-full animate-bounce delay-100"></div>
-            <div className="w-2 h-2 bg-white/60 rounded-full animate-bounce delay-200"></div>
           </div>
         </div>
       </div>
