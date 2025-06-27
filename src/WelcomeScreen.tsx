@@ -20,21 +20,15 @@ export function WelcomeScreen({ onContinue }: WelcomeScreenProps) {
         </div>
       </div>
 
-      {/* Content */}
+       {/* Conteúdo */}
       <div className="relative z-10 text-center max-w-2xl mx-auto">
-        {/* Logo */}
+        {/* Logo fixa no código */}
         <div className="mb-12 animate-fade-in">
-          {logoUrl ? (
-            <img 
-              src={logoUrl} 
-              alt="Logo da Empresa" 
-              className="h-32 w-32 mx-auto rounded-full object-cover border-4 border-white/30 shadow-2xl backdrop-blur-sm"
-            />
-          ) : (
-            <div className="h-32 w-32 mx-auto rounded-full bg-white/20 backdrop-blur-sm border-4 border-white/30 flex items-center justify-center shadow-2xl">
-              <span className="text-white font-bold text-4xl">SC</span>
-            </div>
-          )}
+          <img
+            src="/LogoMoura.jpg"
+            alt="Logo da Empresa"
+            className="h-32 w-32 mx-auto rounded-full object-cover border-4 border-white/30 shadow-2xl backdrop-blur-sm"
+          />
         </div>
 
         {/* Welcome Message */}
