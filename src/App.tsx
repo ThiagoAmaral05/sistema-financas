@@ -3,13 +3,21 @@ import { api } from "../convex/_generated/api";
 import { SignInForm } from "./SignInForm";
 import { SignOutButton } from "./SignOutButton";
 import { PasswordChange } from "./PasswordChange";
+import { WelcomeScreen } from "./WelcomeScreen";
 import { Toaster } from "sonner";
 import { ControlPanel } from "./componentes/ControlPanel";
 import { ReportPanel } from "./componentes/ReportPanel";
 import { PropertyExpenseForm } from "./componentes/PropertyExpenseForm";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function App() {
+  const [showWelcome, setShowWelcome] = useState(true);
+
+  // Reset to welcome screen whenever the component mounts (page refresh/new visit)
+  useEffect(() => {
+    setShowWelcome(true);
+  }, []);
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <header className="sticky top-0 z-10 bg-white/80 backdrop-blur-sm h-16 flex justify-between items-center border-b shadow-sm px-4">
