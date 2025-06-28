@@ -6,7 +6,7 @@ interface WelcomeScreenProps {
 }
 
 export function WelcomeScreen({ onContinue }: WelcomeScreenProps) {
-  const logoUrl = "/LogoMoura.jpg";
+  const logoUrl = "C:/Users/Thiago/Documents/sistema_de_controle_de_finanças_le32gi/LogoMoura.jpg";
 
   return (
     <div className="min-h-screen flex items-center justify-center p-8 relative overflow-hidden">
