@@ -3,7 +3,6 @@ import { Authenticated, Unauthenticated, useQuery } from "convex/react";
 import { api } from "../convex/_generated/api";
 import { SignInForm } from "./SignInForm";
 import { SignOutButton } from "./SignOutButton";
-import { PasswordChange } from "./PasswordChange";
 import { WelcomeScreen } from "./WelcomeScreen";
 import { Toaster } from "sonner";
 import { ControlPanel } from "./componentes/ControlPanel";
@@ -118,7 +117,6 @@ function Content() {
                     Clique aqui para alterar sua senha de acesso
                   </p>
                 </div>
-                <PasswordChange />
               </div>
             </div>
           </div>

@@ -1,12 +1,47 @@
-import { useQuery } from "convex/react";
+import { useQuery, useMutation } from "convex/react";
 import { api } from "../convex/_generated/api";
+import { useRef } from "react";
+import { toast } from "sonner";
 
 interface WelcomeScreenProps {
   onContinue: () => void;
 }
 
 export function WelcomeScreen({ onContinue }: WelcomeScreenProps) {
-  const logoUrl = "C:/Users/Thiago/Documents/sistema_de_controle_de_finanças_le32gi/LogoMoura.jpg";
+  const logoUrl = useQuery(api.system.getSystemLogo);
+  const generateUploadUrl = useMutation(api.system.generateUploadUrl);
+  const updateSystemLogo = useMutation(api.system.updateSystemLogo);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      toast.error("Por favor, selecione apenas arquivos de imagem");
+      return;
+    }
+
+    try {
+      const uploadUrl = await generateUploadUrl();
+      
+      const result = await fetch(uploadUrl, {
+        method: "POST",
+        headers: { "Content-Type": file.type },
+        body: file,
+      });
+      
+      const json = await result.json();
+      if (!result.ok) {
+        throw new Error(`Upload failed: ${JSON.stringify(json)}`);
+      }
+      
+      await updateSystemLogo({ storageId: json.storageId });
+      toast.success("Logo atualizada com sucesso!");
+    } catch (error) {
+      toast.error("Erro ao fazer upload da logo");
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center p-8 relative overflow-hidden">
