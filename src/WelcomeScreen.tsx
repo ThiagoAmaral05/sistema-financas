@@ -55,13 +55,40 @@ export function WelcomeScreen({ onContinue }: WelcomeScreenProps) {
         </div>
       </div>
 
-       {/* Conteúdo */}
+       {/* Content */}
       <div className="relative z-10 text-center max-w-2xl mx-auto">
-        {/* Logo fixa no código */}
-        <div className="mb-12 animate-fade-in">
-          <img
-            src="C:/Users/Thiago/Documents/sistema_de_controle_de_finanças_le32gi/LogoMoura.jpg"
-            className="h-32 w-32 mx-auto rounded-full object-cover border-4 border-white/30 shadow-2xl backdrop-blur-sm"
+        {/* Logo with Upload Button */}
+        <div className="mb-12 animate-fade-in relative">
+          {logoUrl ? (
+            <img 
+              src={logoUrl} 
+              alt="Logo da Empresa" 
+              className="h-32 w-32 mx-auto rounded-full object-cover border-4 border-white/30 shadow-2xl backdrop-blur-sm"
+            />
+          ) : (
+            <div className="h-32 w-32 mx-auto rounded-full bg-white/20 backdrop-blur-sm border-4 border-white/30 flex items-center justify-center shadow-2xl">
+              <span className="text-white font-bold text-4xl">SC</span>
+            </div>
+          )}
+          
+          {/* Upload Button */}
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            className="absolute -bottom-2 -right-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white rounded-full p-3 border border-white/30 transition-all duration-300 hover:scale-105 shadow-lg"
+            title="Alterar Logo"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+            </svg>
+          </button>
+          
+          {/* Hidden File Input */}
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleLogoUpload}
+            accept="image/*"
+            className="hidden"
           />
         </div>
 

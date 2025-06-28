@@ -17,6 +17,7 @@ import type * as auth from "../auth.js";
 import type * as http from "../http.js";
 import type * as propertyExpenses from "../propertyExpenses.js";
 import type * as router from "../router.js";
+import type * as system from "../system.js";
 import type * as transactions from "../transactions.js";
 import type * as users from "../users.js";
 
@@ -33,6 +34,7 @@ declare const fullApi: ApiFromModules<{
   http: typeof http;
   propertyExpenses: typeof propertyExpenses;
   router: typeof router;
+  system: typeof system;
   transactions: typeof transactions;
   users: typeof users;
 }>;
