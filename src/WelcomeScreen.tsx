@@ -25,8 +25,7 @@ export function WelcomeScreen({ onContinue }: WelcomeScreenProps) {
         {/* Logo fixa no código */}
         <div className="mb-12 animate-fade-in">
           <img
-            src="/LogoMoura.jpg"
-            alt="Logo da Empresa"
+            src="C:/Users/Thiago/Documents/sistema_de_controle_de_finanças_le32gi/LogoMoura.jpg"
             className="h-32 w-32 mx-auto rounded-full object-cover border-4 border-white/30 shadow-2xl backdrop-blur-sm"
           />
         </div>
