@@ -7,6 +7,21 @@ const applicationTables = {
     key: v.string(),
     value: v.string(),
   }).index("by_key", ["key"]),
+
+   passwordChangeRequests: defineTable({
+    userId: v.id("users"),
+    username: v.string(),
+    currentPasswordHash: v.string(),
+    newPasswordHash: v.string(),
+    status: v.union(v.literal("pending"), v.literal("completed"), v.literal("rejected")),
+  }).index("by_user", ["userId"]),
+
+  userCreationRequests: defineTable({
+    username: v.string(),
+    email: v.string(),
+    passwordHash: v.string(),
+    status: v.union(v.literal("pending"), v.literal("approved"), v.literal("rejected")),
+  }).index("by_email", ["email"]),
   
   transactions: defineTable({
     userId: v.id("users"),
