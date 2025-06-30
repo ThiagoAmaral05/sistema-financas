@@ -59,8 +59,9 @@ function Content() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto">
+    <>
       <Authenticated>
+        <div className="max-w-6xl mx-auto">
         <div className="mb-6">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
             Bem-Vindo, {loggedInUser?.name || loggedInUser?.email || "Usuário"}!
@@ -95,17 +96,16 @@ function Content() {
           <ControlPanel onPropertySelect={setSelectedProperty} />
         )}
         {activeTab === "relatorio" && <ReportPanel />}
+        </div>
       </Authenticated>
       
       <Unauthenticated>
-        <div className="bg-gradient-to-br from-green-50 to-emerald-100">
-          <main className="flex-1 flex items-center justify-center p-8">
-            <div className="max-w-md mx-auto mt-20">
+        <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 flex items-center justify-center p-4">
+            <div className="w-full max-w-md">
               <SignInForm />
             </div>
-          </main>
         </div>
       </Unauthenticated>
-    </div>
+    </>
   );
 }

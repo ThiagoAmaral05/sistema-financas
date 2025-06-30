@@ -4,14 +4,15 @@ import { useState } from "react";
 import { useQuery } from "convex/react";
 import { api } from "../convex/_generated/api";
 import { toast } from "sonner";
+import { Eye, EyeOff } from "lucide-react";
 
 export function SignInForm() {
   const { signIn } = useAuthActions();
   const [flow, setFlow] = useState<"signIn" | "signUp">("signIn");
   const [submitting, setSubmitting] = useState(false);
   const logoUrl = useQuery(api.system.getSystemLogo);
+  const [showPassword, setShowPassword] = useState(false);
   
-
   return (
     <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md mx-auto">
       {/* Logo Section */}
@@ -72,13 +73,25 @@ export function SignInForm() {
         <label className="block text-sm font-medium text-gray-700 mb-2">
           Senha
         </label>
-        <input
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all"
-          type="password"
-          name="password"
-          placeholder="Digite sua senha"
-          required
+        <div className="relative">
+         <input
+            className="w-full px-4 py-3 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all"
+            type={showPassword ? "text" : "password"}
+            name="password"
+            placeholder="Digite sua senha"
+            required
         />
+
+          <button
+            type="button"
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+            onClick={() => setShowPassword(!showPassword)}
+            tabIndex={-1}
+          >
+            {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
+          </button>
+        </div>
+        
         <button className="auth-button" type="submit" disabled={submitting}>
           {flow === "signIn" ? "Entrar" : "Registrar"}
         </button>
