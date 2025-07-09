@@ -1,12 +1,15 @@
 import { MdLocationCity } from "react-icons/md"; // ícone de prédio
 import { BsCalculator } from "react-icons/bs"; // ícone de calculadora
 import { FaCar, FaCoins, FaUsers, FaShieldAlt, FaPuzzlePiece } from "react-icons/fa"; // restante dos ícones
+import {useQuery } from "convex/react";
+import { api } from "../../convex/_generated/api";
 
 interface ControlPanelProps {
   onPropertySelect: (property: string) => void;
 }
 
 export function ControlPanel({ onPropertySelect }: ControlPanelProps) {
+  const loggedInUser = useQuery(api.auth.loggedInUser);
   const properties = [
     // Grupo 1 - Imóveis
     { name: "Colina B1", category: "Imóveis" },
@@ -63,23 +66,30 @@ export function ControlPanel({ onPropertySelect }: ControlPanelProps) {
 
   return (
     <div className="space-y-8">
-      <div className="bg-white rounded-xl shadow-sm border p-8">
-        <h2 className="text-2xl font-bold text-gray-900">Painel de Controle</h2>
-        <p className="text-gray-600 mb-8">
-          Selecione uma categoria para gerenciar as despesas específicas de cada propriedade.
+      <div className="bg-gradient-to-r from-green-600 to-emerald-700 rounded-xl p-6 text-white">
+        <h1 className="text-2xl font-bold mb-2">
+          Bem-Vindo, {loggedInUser?.name || loggedInUser?.email || "Usuário"}!
+        </h1>
+        <p className="text-green-100">
+          Gerencie suas despesas de forma simples e eficiente. Registre suas movimentações!
         </p>
+      </div>
+
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Painel de Controle</h2>
+        <p className="text-m text-gray-800 dark:text-white mb-4">Selecione uma categoria para gerenciar as despesas específicas de cada propriedade.</p>
 
         {Object.entries(groupedProperties).map(([category, items]) => (
-          <div key={category} className="mb-12 bg-gray-50 p-6 rounded-md shadow-inner">
-            <h3 className="text-lg font-semibold text-gray-800 mb-6">{category}</h3>
+          <div key={category} className="mb-8 bg-gray-100 dark:bg-gray-700 p-6 rounded-md shadow-inner">
+            <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">{category}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {items.map((property) => (
                 <button
                   key={property.name}
                   onClick={() => onPropertySelect(property.name)}
-                  className="bg-white border border-green-700 text-green-800 p-6 rounded-xl hover:bg-green-50 hover:shadow-lg hover:scale-[1.02] transition-all duration-200"
+                  className="bg-white dark:bg-gray-800 border border-green-600 text-green-700 dark:text-white p-4 rounded-lg transition-colors duration-200 text-center hover:bg-green-50 dark:hover:bg-green-100 shadow-md"
                 >
-                  <div className="text-center">
+                  <div className="text-2xl mb-2">
                     {getIconForProperty(property.name)}
                     <h4 className="font-medium text-sm">{property.name}</h4>
                   </div>

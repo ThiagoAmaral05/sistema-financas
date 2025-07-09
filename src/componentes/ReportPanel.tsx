@@ -54,8 +54,12 @@ const fieldLabels = {
 export function ReportPanel() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [tempStartDate, setTempStartDate] = useState("");
+  const [tempEndDate, setTempEndDate] = useState("");
   const [selectedProperty, setSelectedProperty] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
+  const [sortOrder, setSortOrder] = useState<"normal" | "asc" | "desc">("normal");
+
 
   const expenses = useQuery(api.propertyExpenses.list, {
     propertyName: selectedProperty || undefined,
@@ -95,6 +99,13 @@ export function ReportPanel() {
     return (expense.status || "a_pagar") === selectedStatus;
   }) || [];
 
+  const sortedExpenses = [...filteredExpenses];
+    if (sortOrder === "asc") {
+      sortedExpenses.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    } else if (sortOrder === "desc") {
+      sortedExpenses.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    }
+
   const generateCSV = () => {
     if (!filteredExpenses || filteredExpenses.length === 0) {
       toast.error("Nenhum dado encontrado para gerar relatório");
@@ -115,7 +126,7 @@ export function ReportPanel() {
       headers.join(";"), // Usar ponto e vírgula como separador para Excel brasileiro
       ...filteredExpenses.map(expense => {
         const row = [
-          new Date(expense.date).toLocaleDateString('pt-BR'),
+          new Date(expense.date + "T03:00:00").toLocaleDateString('pt-BR'),
           `"${expense.propertyName}"`, // Aspas para nomes com espaços
           (expense.status || "a_pagar") === "pago" ? "Pago" : "À Pagar",
         ];
@@ -209,18 +220,22 @@ export function ReportPanel() {
   const columnTotals = getColumnTotals();
 
   const formatDateRange = () => {
-    if (!startDate && !endDate) return "";
-    if (startDate && endDate) {
-      return `de ${new Date(startDate).toLocaleDateString('pt-BR')} até ${new Date(endDate).toLocaleDateString('pt-BR')}`;
-    }
-    if (startDate) {
-      return `a partir de ${new Date(startDate).toLocaleDateString('pt-BR')}`;
-    }
-    if (endDate) {
-      return `até ${new Date(endDate).toLocaleDateString('pt-BR')}`;
-    }
-    return "";
-  };
+  if (!startDate && !endDate) return "";
+
+  const format = (dateStr: string) =>
+    new Date(dateStr + "T03:00:00").toLocaleDateString("pt-BR");
+
+  if (startDate && endDate) {
+    return `de ${format(startDate)} até ${format(endDate)}`;
+  }
+  if (startDate) {
+    return `a partir de ${format(startDate)}`;
+  }
+  if (endDate) {
+    return `até ${format(endDate)}`;
+  }
+  return "";
+};
 
   // Só mostrar dados se AMBAS as datas estiverem preenchidas
   const shouldShowData = startDate && endDate;
@@ -236,19 +251,26 @@ export function ReportPanel() {
   return (
     <div className="space-y-6">
       {/* Filtros */}
-      <div className="bg-white rounded-lg shadow-sm border p-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Relatórios</h2>
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Relatórios</h2>
+        <button
+          onClick={generateCSV}
+          disabled={!shouldShowData}
+          className="bg-green-600 text-white py-2.5 px-4 rounded-lg font-medium hover:bg-green-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed mb-6"
+        >
+          Gerar Planilha
+        </button>
         
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
           <div>
-            <label htmlFor="property" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="property" className="block text-sm font-medium text-gray-700 dark:text-gray-100 mb-2">
               Categoria
             </label>
             <select
               id="property"
               value={selectedProperty}
               onChange={(e) => setSelectedProperty(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-black dark:text-white focus:ring-2 focus:ring-green-500 focus:border-green-500"
             >
               <option value="">Todas as categorias</option>
               {properties.map((property) => (
@@ -260,14 +282,14 @@ export function ReportPanel() {
           </div>
 
           <div>
-            <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="status" className="block text-sm font-medium text-gray-700 dark:text-gray-100 mb-2">
               Status
             </label>
             <select
               id="status"
               value={selectedStatus}
               onChange={(e) => setSelectedStatus(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-black dark:text-white focus:ring-2 focus:ring-green-500 focus:border-green-500"
             >
               <option value="">Todos os status</option>
               <option value="pago">Pago</option>
@@ -276,41 +298,55 @@ export function ReportPanel() {
           </div>
 
           <div>
-            <label htmlFor="startDate" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="startDate" className="block text-sm font-medium text-gray-700 dark:text-gray-100 mb-2">
               Data Inicial *
             </label>
             <input
               type="date"
               id="startDate"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+              value={tempStartDate}
+              onChange={(e) => setTempStartDate(e.target.value)}
+              onBlur={() => setStartDate(tempStartDate)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") setStartDate(tempStartDate);
+              }}
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-black dark:text-white focus:ring-2 focus:ring-green-500 focus:border-green-500"
               required
             />
           </div>
 
           <div>
-            <label htmlFor="endDate" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="endDate" className="block text-sm font-medium text-gray-700 dark:text-gray-100 mb-2">
               Data Final *
             </label>
             <input
               type="date"
               id="endDate"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+              value={tempEndDate}
+              onChange={(e) => setTempEndDate(e.target.value)}
+              onBlur={() => setEndDate(tempEndDate)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") setEndDate(tempEndDate);
+              }}
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-black dark:text-white focus:ring-2 focus:ring-green-500 focus:border-green-500"
               required
             />
           </div>
-
-          <div className="flex items-end">
-            <button
-              onClick={generateCSV}
-              disabled={!shouldShowData}
-              className="w-full bg-green-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-green-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+          
+          <div>
+            <label htmlFor="sortOrder" className="block text-sm font-medium text-gray-700 dark:text-gray-100 mb-2">
+              Ordenar por
+            </label>
+            <select
+              id="sortOrder"
+              value={sortOrder}
+              onChange={(e) => setSortOrder(e.target.value as "normal" | "asc" | "desc")}
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-black dark:text-white focus:ring-2 focus:ring-green-500 focus:border-green-500"
             >
-              Gerar Planilha
-            </button>
+              <option value="normal">Padrão</option>
+              <option value="asc">Data (Crescente ↑)</option>
+              <option value="desc">Data (Decrescente ↓)</option>
+            </select>
           </div>
         </div>
 
@@ -318,46 +354,46 @@ export function ReportPanel() {
           <>
             {/* Título do Relatório */}
             <div className="mb-6">
-              <h3 className="text-xl font-bold text-gray-900">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white">
                 Relatório {formatDateRange()}
               </h3>
             </div>
 
             {/* Resumo */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-              <div className="bg-green-50 p-4 rounded-lg">
+              <div className="bg-green-50 dark:bg-green-950 p-4 rounded-lg">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-green-600">Total Pago</p>
-                    <p className="text-2xl font-bold text-green-700">{formatCurrency(totals.pago)}</p>
+                    <p className="text-sm font-medium text-green-600 dark:text-green-400">Total Pago</p>
+                    <p className="text-2xl font-bold text-green-700 dark:text-green-300">{formatCurrency(totals.pago)}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm text-green-600">{totals.pagoCount}</p>
-                    <p className="text-xs text-green-500">registros</p>
+                    <p className="text-sm text-green-600 dark:text-green-400">{totals.pagoCount}</p>
+                    <p className="text-xs text-green-500 dark:text-green-500">registros</p>
                   </div>
                 </div>
               </div>
-              <div className="bg-red-50 p-4 rounded-lg">
+              <div className="bg-red-50 dark:bg-red-950 p-4 rounded-lg">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-red-600">Total À Pagar</p>
-                    <p className="text-2xl font-bold text-red-700">{formatCurrency(totals.aPagar)}</p>
+                    <p className="text-sm font-medium text-red-600 dark:text-red-400">Total À Pagar</p>
+                    <p className="text-2xl font-bold text-red-700 dark:text-red-300">{formatCurrency(totals.aPagar)}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm text-red-600">{totals.aPagarCount}</p>
-                    <p className="text-xs text-red-500">registros</p>
+                    <p className="text-sm text-red-600 dark:text-red-400">{totals.aPagarCount}</p>
+                    <p className="text-xs text-red-500 dark:text-red-500">registros</p>
                   </div>
                 </div>
               </div>
-              <div className="bg-blue-50 p-4 rounded-lg">
+              <div className="bg-blue-50 dark:bg-blue-950 p-4 rounded-lg">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-blue-600">Total Geral</p>
-                    <p className="text-2xl font-bold text-blue-700">{formatCurrency(totals.total)}</p>
+                    <p className="text-sm font-medium text-blue-600 dark:text-blue-400">Total Geral</p>
+                    <p className="text-2xl font-bold text-blue-700 dark:text-blue-300">{formatCurrency(totals.total)}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm text-blue-600">{totals.pagoCount + totals.aPagarCount}</p>
-                    <p className="text-xs text-blue-500">registros</p>
+                    <p className="text-sm text-blue-600 dark:text-blue-400">{totals.pagoCount + totals.aPagarCount}</p>
+                    <p className="text-xs text-blue-500 dark:text-blue-500">registros</p>
                   </div>
                 </div>
               </div>
@@ -368,15 +404,15 @@ export function ReportPanel() {
 
       {/* Dados */}
       {shouldShowData && (
-        <div className="bg-white rounded-lg shadow-sm border">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm dark:border border-gray-500">
           <div className="p-6 border-b">
-            <h3 className="text-lg font-semibold text-gray-900">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
               Dados Encontrados ({filteredExpenses.length} registros)
             </h3>
           </div>
           <div className="p-6">
             {filteredExpenses.length === 0 ? (
-              <p className="text-gray-500 text-center py-8">
+              <p className="text-gray-500 dark:text-white text-center py-8">
                 Nenhum registro encontrado para os filtros selecionados.
               </p>
             ) : (
@@ -385,60 +421,60 @@ export function ReportPanel() {
                 <div className="overflow-x-auto mb-6">
                   <table className="w-full border-collapse">
                     <thead>
-                      <tr className="border-b-2 border-gray-200">
-                        <th className="text-left py-3 px-4 font-semibold text-gray-900">Data</th>
-                        <th className="text-left py-3 px-4 font-semibold text-gray-900">Categoria</th>
-                        <th className="text-center py-3 px-4 font-semibold text-gray-900">Status</th>
+                      <tr className="border-b-2 border-gray-300 dark:border-gray-600">
+                        <th className="text-left py-3 px-4 font-semibold text-gray-900 dark:text-gray-100">Data</th>
+                        <th className="text-left py-3 px-4 font-semibold text-gray-900 dark:text-gray-100">Categoria</th>
+                        <th className="text-center py-3 px-4 font-semibold text-gray-900 dark:text-gray-100">Status</th>
                         {Object.keys(columnTotals).map(field => (
-                          <th key={field} className="text-right py-3 px-4 font-semibold text-gray-900">
+                          <th key={field} className="text-right py-3 px-4 font-semibold text-gray-900 dark:text-gray-100">
                             {fieldLabels[field as keyof typeof fieldLabels]}
                           </th>
                         ))}
-                        <th className="text-right py-3 px-4 font-semibold text-gray-900">Total</th>
+                        <th className="text-right py-3 px-4 font-semibold text-gray-900 dark:text-gray-100">Total</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {filteredExpenses.map((expense) => {
+                      {sortedExpenses.map((expense) => {
                         const expenseFields = getExpenseFields(expense);
                         const total = getTotal(expense);
                         
                         return (
-                          <tr key={expense._id} className="border-b border-gray-100 hover:bg-gray-50">
-                            <td className="py-3 px-4">
-                              {new Date(expense.date).toLocaleDateString('pt-BR')}
+                          <tr key={expense._id} className="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">
+                            <td className="py-3 px-4 text-gray-800 dark:text-gray-200">
+                              {new Date(expense.date + "T03:00:00").toLocaleDateString('pt-BR')}
                             </td>
-                            <td className="py-3 px-4 font-medium">{expense.propertyName}</td>
+                            <td className="py-3 px-4 font-medium text-gray-800 dark:text-gray-200">{expense.propertyName}</td>
                             <td className="py-3 px-4 text-center">
                               <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                                 (expense.status || "a_pagar") === "pago"
-                                  ? "bg-green-100 text-green-700"
-                                  : "bg-red-100 text-red-700"
+                                  ? "bg-green-100 text-green-700 dark:bg-green-800 dark:text-green-200"
+                                  : "bg-red-100 text-red-700 dark:bg-red-800 dark:text-red-200"
                               }`}>
-                                {(expense.status || "a_pagar") === "pago" ? "✅ Pago" : "❌ À Pagar"}
+                                {(expense.status || "a_pagar") === "pago" ? "Pago" : "À Pagar"}
                               </span>
                             </td>
                             {Object.keys(columnTotals).map(field => (
-                              <td key={field} className="py-3 px-4 text-right">
+                              <td key={field} className="py-3 px-4 text-right text-gray-800 dark:text-gray-200">
                                 {(expense as any)[field] ? formatCurrency((expense as any)[field]) : "-"}
                               </td>
                             ))}
-                            <td className="py-3 px-4 text-right font-semibold">
+                            <td className="py-3 px-4 text-right font-semibold text-gray-800 dark:text-gray-200">
                               {formatCurrency(total)}
                             </td>
                           </tr>
                         );
                       })}
                       {/* Linha de Totais */}
-                      <tr className="border-t-2 border-gray-300 bg-gray-50 font-semibold">
-                        <td className="py-3 px-4 font-bold">TOTAL GERAL</td>
+                      <tr className="border-t-2 border-gray-300 dark:border-gray-600 dark:bg-gray-800 font-semibold">
+                        <td className="py-3 px-4 font-bold text-gray-900 dark:text-white">TOTAL GERAL</td>
                         <td className="py-3 px-4"></td>
                         <td className="py-3 px-4"></td>
                         {Object.keys(columnTotals).map(field => (
-                          <td key={field} className="py-3 px-4 text-right font-bold text-blue-700">
+                          <td key={field} className="py-3 px-4 text-right font-bold text-blue-700 dark:text-blue-400">
                             {formatCurrency(columnTotals[field])}
                           </td>
                         ))}
-                        <td className="py-3 px-4 text-right font-bold text-blue-700 text-lg">
+                        <td className="py-3 px-4 text-right font-bold text-blue-700 dark:text-blue-400 text-lg">
                           {formatCurrency(totals.total)}
                         </td>
                       </tr>
@@ -452,13 +488,13 @@ export function ReportPanel() {
       )}
 
       {!shouldShowData && (
-        <div className="bg-white rounded-lg shadow-sm border p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm dark:border border-gray-500 p-6">
           <div className="text-center py-12">
             <div className="text-6xl mb-4">📊</div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
               Selecione as datas para visualizar o relatório
             </h3>
-            <p className="text-gray-500">
+            <p className="text-gray-700 dark:text-white ">
               Preencha tanto a data inicial quanto a data final para gerar o relatório de despesas.
             </p>
           </div>
