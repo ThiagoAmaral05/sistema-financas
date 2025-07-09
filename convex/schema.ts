@@ -22,6 +22,14 @@ const applicationTables = {
     passwordHash: v.string(),
     status: v.union(v.literal("pending"), v.literal("approved"), v.literal("rejected")),
   }).index("by_email", ["email"]),
+
+  userSettings: defineTable({
+    userId: v.id("users"),
+    currency: v.string(),
+    darkMode: v.boolean(),
+    notifications: v.boolean(),
+    language: v.string(),
+  }).index("by_user", ["userId"]),
   
   transactions: defineTable({
     userId: v.id("users"),

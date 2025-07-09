@@ -112,8 +112,8 @@ export const list = query({
     if (args.startDate || args.endDate) {
       return expenses.filter(expense => {
         const expenseDate = new Date(expense.date);
-        const start = args.startDate ? new Date(args.startDate) : new Date(0);
-        const end = args.endDate ? new Date(args.endDate) : new Date();
+        const start = args.startDate ? new Date(args.startDate + "T00:00:00-03:00") : new Date(0);
+        const end = args.endDate ? new Date(args.endDate + "T23:59:59-03:00") : new Date();
         return expenseDate >= start && expenseDate <= end;
       });
     }
