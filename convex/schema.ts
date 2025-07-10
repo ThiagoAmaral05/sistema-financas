@@ -16,13 +16,6 @@ const applicationTables = {
     status: v.union(v.literal("pending"), v.literal("completed"), v.literal("rejected")),
   }).index("by_user", ["userId"]),
 
-  userCreationRequests: defineTable({
-    username: v.string(),
-    email: v.string(),
-    passwordHash: v.string(),
-    status: v.union(v.literal("pending"), v.literal("approved"), v.literal("rejected")),
-  }).index("by_email", ["email"]),
-
   userSettings: defineTable({
     userId: v.id("users"),
     currency: v.string(),
@@ -30,27 +23,6 @@ const applicationTables = {
     notifications: v.boolean(),
     language: v.string(),
   }).index("by_user", ["userId"]),
-  
-  transactions: defineTable({
-    userId: v.id("users"),
-    description: v.string(),
-    amount: v.number(),
-    type: v.union(v.literal("income"), v.literal("expense")),
-    category: v.string(),
-    date: v.string(),
-  })
-    .index("by_user", ["userId"])
-    .index("by_user_and_type", ["userId", "type"])
-    .index("by_user_and_date", ["userId", "date"]),
-
-  categories: defineTable({
-    userId: v.id("users"),
-    name: v.string(),
-    type: v.union(v.literal("income"), v.literal("expense")),
-    color: v.string(),
-  })
-    .index("by_user", ["userId"])
-    .index("by_user_and_type", ["userId", "type"]),
 
   propertyExpenses: defineTable({
     userId: v.id("users"),

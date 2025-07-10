@@ -20,7 +20,6 @@ import type * as propertyExpenses from "../propertyExpenses.js";
 import type * as router from "../router.js";
 import type * as settings from "../settings.js";
 import type * as system from "../system.js";
-import type * as transactions from "../transactions.js";
 import type * as users from "../users.js";
 
 /**
@@ -39,7 +38,6 @@ declare const fullApi: ApiFromModules<{
   router: typeof router;
   settings: typeof settings;
   system: typeof system;
-  transactions: typeof transactions;
   users: typeof users;
 }>;
 export declare const api: FilterApi<
