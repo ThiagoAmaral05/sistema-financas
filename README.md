@@ -75,8 +75,4 @@ Para executar como desenvolvimento:
 
 ## 📄 Licença
 
-<<<<<<< HEAD
 Este projeto é privado e de uso restrito.
-=======
-Este projeto é privado e de uso restrito.
->>>>>>> 56b8b498b9aaf03cf1f6e3c17a20be2f88fed7c2
