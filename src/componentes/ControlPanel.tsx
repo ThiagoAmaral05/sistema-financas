@@ -1,6 +1,6 @@
 import { GiSailboat } from "react-icons/gi"; // ícone de prédio
 import { BsCalculator } from "react-icons/bs"; // ícone de calculadora
-import { FaCar, FaCoins, FaUsers, FaShieldAlt, FaHeartbeat, FaUserTie, FaEllipsisH, FaHome, FaBuilding , FaHouseUser, FaShip } from "react-icons/fa"; // restante dos ícones
+import { FaCar, FaCoins, FaUsers, FaShieldAlt, FaHeartbeat, FaUserTie, FaEllipsisH, FaHome, FaBuilding} from "react-icons/fa"; // restante dos ícones
 import {useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 
@@ -40,7 +40,6 @@ export function ControlPanel({ onPropertySelect }: ControlPanelProps) {
 
     // Grupo 6 - Outros
     { name: "Aluguel Bahia Marina", category: "Outros" },
-    { name: "Outros", category: "Outros" },
   ];
 
   const getIconForProperty = (name: string) => {
@@ -72,8 +71,6 @@ export function ControlPanel({ onPropertySelect }: ControlPanelProps) {
         return <FaUserTie className="text-3xl text-green-700 mb-2 mx-auto" />;
       case "Aluguel Bahia Marina":
         return <GiSailboat className="text-3xl text-green-700 mb-2 mx-auto" />;
-      case "Outros":
-        return <FaEllipsisH className="text-3xl text-green-700 mb-2 mx-auto" />;
       default:
         return null;
     }

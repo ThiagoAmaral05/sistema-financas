@@ -44,7 +44,6 @@ export const create = mutation({
     ferias: v.optional(v.number()),
     vagaLanchaRole: v.optional(v.number()),
     vagaBoteCaua: v.optional(v.number()),
-    bahiaMarina: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);

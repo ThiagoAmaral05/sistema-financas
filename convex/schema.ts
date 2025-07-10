@@ -66,7 +66,6 @@ const applicationTables = {
     ferias: v.optional(v.number()),
     vagaLanchaRole: v.optional(v.number()),
     vagaBoteCaua: v.optional(v.number()),
-    bahiaMarina: v.optional(v.number()),
   })
     .index("by_user", ["userId"])
     .index("by_user_and_property", ["userId", "propertyName"])

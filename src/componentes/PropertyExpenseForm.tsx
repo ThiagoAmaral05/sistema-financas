@@ -114,9 +114,6 @@ const propertyFields = {
     { key: "vagaLanchaRole", label: "Vaga S/058- Lancha Rolê" },
     { key: "vagaBoteCaua", label: "Vaga S/097- Bote Cauã" },
   ],
-  "Outros": [
-    { key: "bahiaMarina", label: "Bahia Marina" },
-  ],
 };
 
 export function PropertyExpenseForm({ propertyName, onBack }: PropertyExpenseFormProps) {

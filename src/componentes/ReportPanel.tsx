@@ -22,7 +22,6 @@ const propertyFields = {
   "Seguro de Vida Família Moura": ["josue", "mariana", "bia", "caua"],
   "Seguro Patrimonial": ["colinaB1", "portoTrapiche", "dAzur", "praiaDoForte", "rcMouraFacility", "lanchaRole", "boteCaua"],
   "Aluguel Bahia Marina": ["vagaLanchaRole", "vagaBoteCaua"],
-  "Outros": ["bahiaMarina"],
 };
 
 const fieldLabels = {
@@ -62,7 +61,6 @@ const fieldLabels = {
   ferias: "Férias",
   vagaLanchaRole: "Vaga S/058- Lancha Rolê",
   vagaBoteCaua: "Vaga S/097- Bote Cauã",
-  bahiaMarina: "Bahia Marina",
 };
 
 export function ReportPanel() {
@@ -86,7 +84,7 @@ export function ReportPanel() {
     "Hangar", "Andre Contador", "Plano de Saúde", "Despesas Cauã", 
     "RANGER SPORT", "BMW X3", "BMW X1", "NIVUS", "T-CROSS", 
     "RANGER EVOQUE", "Seguro de Vida Familia Moura", "Seguro Patrimonial", 
-    "Jairo Santana", "Aluguel Bahia Marina", "Outros"
+    "Jairo Santana", "Aluguel Bahia Marina"
   ];
 
   const formatCurrency = (amount: number) => {
