@@ -1,23 +1,7 @@
 # Sistema de Controle Financeiro
 
 Um sistema completo para gerenciamento de despesas e finanças pessoais.
-
-## 📚 Sumário
 -----------------------------------------------------------------------------------
-
-- [Sobre o Projeto](#sobre-o-projeto)
-- [Como Utilizar](#como-utilizar)
-- [Criar Ambiente](#criar-ambiente)
-- [Pré-requisitos](#pré-requisitos)
-- [No Terminal](#no-terminal)
-- [Executar o Projeto](#executar-o-projeto)
-- [Deploy para Produção](#deploy-para-produção)
-  - [Vercel](#vercel)
-  - [Netlify](#netlify)
-- [Segurança](#segurança)
-- [Aplicação](#aplicação)
-- [Funcionalidades](#funcionalidades)
-- [Licença](#licença)
 
 ## 🚀 Sobre o Projeto
 
