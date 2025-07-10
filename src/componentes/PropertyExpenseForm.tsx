@@ -16,39 +16,40 @@ const propertyFields = {
     { key: "condominio", label: "Condomínio" },
     { key: "luz", label: "Luz" },
     { key: "agua", label: "Água" },
+    { key: "iptu", label: "IPTU" },
   ],
   "Porto Trapiche": [
     { key: "condominio", label: "Condomínio" },
     { key: "luz", label: "Luz" },
     { key: "internet", label: "Internet" },
+    { key: "iptu", label: "IPTU" },
   ],
-  "D'Azul": [
+  "D'Azur": [
     { key: "condominio", label: "Condomínio" },
     { key: "luz", label: "Luz" },
     { key: "gas", label: "Gás" },
+    { key: "internet", label: "Internet" },
+    { key: "sky", label: "SKY" },
     { key: "iptu", label: "IPTU" },
   ],
   "Praia do Forte": [
     { key: "condominio", label: "Condomínio" },
     { key: "luz", label: "Luz" },
+    { key: "iptu", label: "IPTU" },
   ],
   "Hangar": [
     { key: "condominio", label: "Condomínio" },
     { key: "luz", label: "Luz" },
     { key: "internet", label: "Internet" },
+    { key: "iptu", label: "IPTU" },
   ],
   "Andre Contador": [
     { key: "patrimonial", label: "Patrimonial" },
     { key: "mouraFacility", label: "Moura Facility" },
     { key: "mjb", label: "MJB" },
   ],
-  "Automoveis": [
-    { key: "rangerSport", label: "Ranger SPORT" },
-    { key: "bmwX3", label: "BMW X3" },
-    { key: "bmwX1", label: "BMW X1" },
-    { key: "nivus", label: "NIVUS" },
-    { key: "tCross", label: "T-CROSS" },
-    { key: "rangerEvoque", label: "RANGER EVOQUE" },
+  "Plano de Saúde": [
+    { key: "familiaMoura", label: "Família Moura" },
   ],
   "Despesas Cauã": [
     { key: "condominio", label: "Condomínio" },
@@ -56,7 +57,38 @@ const propertyFields = {
     { key: "aluguel", label: "Aluguel" },
     { key: "fiancaMensal", label: "Fiança Mensal" },
   ],
-  "Seguro de Vida Familia Moura": [
+  "RANGER SPORT": [
+    { key: "ipva", label: "IPVA" },
+    { key: "seguro", label: "Seguro" },
+    { key: "licenciamento", label: "Licenciamento" },
+  ],
+  "BMW X3": [
+    { key: "ipva", label: "IPVA" },
+    { key: "seguro", label: "Seguro" },
+    { key: "licenciamento", label: "Licenciamento" },
+  ],
+  "BMW X1": [
+    { key: "ipva", label: "IPVA" },
+    { key: "seguro", label: "Seguro" },
+    { key: "licenciamento", label: "Licenciamento" },
+    { key: "financiamento", label: "Financiamento" },
+  ],
+  "NIVUS": [
+    { key: "ipva", label: "IPVA" },
+    { key: "seguro", label: "Seguro" },
+    { key: "licenciamento", label: "Licenciamento" },
+  ],
+  "T-CROSS": [
+    { key: "ipva", label: "IPVA" },
+    { key: "seguro", label: "Seguro" },
+    { key: "licenciamento", label: "Licenciamento" },
+  ],
+  "RANGER EVOQUE": [
+    { key: "ipva", label: "IPVA" },
+    { key: "seguro", label: "Seguro" },
+    { key: "licenciamento", label: "Licenciamento" },
+  ],
+  "Seguro de Vida Família Moura": [
     { key: "josue", label: "Josué" },
     { key: "mariana", label: "Mariana" },
     { key: "bia", label: "Bia" },
@@ -65,14 +97,25 @@ const propertyFields = {
   "Seguro Patrimonial": [
     { key: "colinaB1", label: "Colina B1" },
     { key: "portoTrapiche", label: "Porto Trapiche" },
-    { key: "dAzul", label: "D'Azul" },
+    { key: "dAzur", label: "D'Azur" },
     { key: "praiaDoForte", label: "Praia do Forte" },
     { key: "rcMouraFacility", label: "RC Moura Facility" },
     { key: "lanchaRole", label: "Lancha Rolé" },
-    { key: "lanchaCaua", label: "Lancha Cauã" },
+    { key: "boteCaua", label: "Bote Cauã" },
+  ],
+  "Jairo Santana": [
+    { key: "salario", label: "Salário" },
+    { key: "fgts", label: "FGTS" },
+    { key: "alimentacao", label: "Alimentação" },
+    { key: "transporte", label: "Transporte" },
+    { key: "ferias", label: "Férias" },
+  ],
+  "Aluguel Bahia Marina": [
+    { key: "vagaLanchaRole", label: "Vaga S/058- Lancha Rolê" },
+    { key: "vagaBoteCaua", label: "Vaga S/097- Bote Cauã" },
   ],
   "Outros": [
-    { key: "baiaMarina", label: "Baia Marina" },
+    { key: "bahiaMarina", label: "Bahia Marina" },
   ],
 };
 

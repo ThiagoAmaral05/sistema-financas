@@ -71,7 +71,7 @@ export function WelcomeScreen({ onContinue }: WelcomeScreenProps) {
             </div>
           )}
           
-          {/* Upload Button */}
+          {/* Upload Button 
           <button
             onClick={() => fileInputRef.current?.click()}
             className="absolute -bottom-2 -right-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white rounded-full p-3 border border-white/30 transition-all duration-300 hover:scale-105 shadow-lg"
@@ -81,6 +81,7 @@ export function WelcomeScreen({ onContinue }: WelcomeScreenProps) {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
             </svg>
           </button>
+          */}
           
           {/* Hidden File Input */}
           <input

@@ -1,6 +1,6 @@
-import { MdLocationCity } from "react-icons/md"; // ícone de prédio
+import { GiSailboat } from "react-icons/gi"; // ícone de prédio
 import { BsCalculator } from "react-icons/bs"; // ícone de calculadora
-import { FaCar, FaCoins, FaUsers, FaShieldAlt, FaPuzzlePiece } from "react-icons/fa"; // restante dos ícones
+import { FaCar, FaCoins, FaUsers, FaShieldAlt, FaHeartbeat, FaUserTie, FaEllipsisH, FaHome, FaBuilding , FaHouseUser, FaShip } from "react-icons/fa"; // restante dos ícones
 import {useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 
@@ -14,20 +14,32 @@ export function ControlPanel({ onPropertySelect }: ControlPanelProps) {
     // Grupo 1 - Imóveis
     { name: "Colina B1", category: "Imóveis" },
     { name: "Porto Trapiche", category: "Imóveis" },
-    { name: "D'Azul", category: "Imóveis" },
+    { name: "D'Azur", category: "Imóveis" },
     { name: "Praia do Forte", category: "Imóveis" },
     { name: "Hangar", category: "Imóveis" },
 
     // Grupo 2 - Pessoal
     { name: "Andre Contador", category: "Pessoal" },
-    { name: "Automoveis", category: "Pessoal" },
+    { name: "Plano de Saúde", category: "Pessoal" },
     { name: "Despesas Cauã", category: "Pessoal" },
 
-    // Grupo 3 - Seguros
-    { name: "Seguro de Vida Familia Moura", category: "Seguros" },
-    { name: "Seguro Patrimonial", category: "Seguros" },
+    // Grupo 3 - Automóveis
+    { name: "RANGER SPORT", category: "Automóveis" },
+    { name: "BMW X3", category: "Automóveis" },
+    { name: "BMW X1", category: "Automóveis" },
+    { name: "NIVUS", category: "Automóveis" },
+    { name: "T-CROSS", category: "Automóveis" },
+    { name: "RANGER EVOQUE", category: "Automóveis" },
 
-    // Grupo 4 - Outros
+    // Grupo 4 - Seguros
+    { name: "Seguro de Vida Família Moura", category: "Seguros" },
+    { name: "Seguro Patrimonial", category: "Seguros" },
+    
+    // Grupo 5 - Funcionários
+    { name: "Jairo Santana", category: "Funcionáros" },
+
+    // Grupo 6 - Outros
+    { name: "Aluguel Bahia Marina", category: "Outros" },
     { name: "Outros", category: "Outros" },
   ];
 
@@ -35,22 +47,33 @@ export function ControlPanel({ onPropertySelect }: ControlPanelProps) {
     switch (name) {
       case "Colina B1":
       case "Porto Trapiche":
-      case "D'Azul":
+      case "D'Azur":
       case "Praia do Forte":
       case "Hangar":
-        return <MdLocationCity className="text-3xl text-green-700 mb-2 mx-auto" />;
+        return <FaHome className="text-3xl text-green-700 mb-2 mx-auto" />;
       case "Andre Contador":
         return <BsCalculator className="text-3xl text-green-700 mb-2 mx-auto" />;
-      case "Automoveis":
-        return <FaCar className="text-3xl text-green-700 mb-2 mx-auto" />;
+      case "Plano de Saúde":
+        return <FaHeartbeat className="text-3xl text-green-700 mb-2 mx-auto" />;
       case "Despesas Cauã":
         return <FaCoins className="text-3xl text-green-700 mb-2 mx-auto" />;
-      case "Seguro de Vida Familia Moura":
+      case "RANGER SPORT":
+      case "BMW X3":
+      case "BMW X1":
+      case "NIVUS":
+      case "T-CROSS":
+      case "RANGER EVOQUE":
+        return <FaCar className="text-3xl text-green-700 mb-2 mx-auto" />;
+      case "Seguro de Vida Família Moura":
         return <FaUsers className="text-3xl text-green-700 mb-2 mx-auto" />;
       case "Seguro Patrimonial":
         return <FaShieldAlt className="text-3xl text-green-700 mb-2 mx-auto" />;
+      case "Jairo Santana":
+        return <FaUserTie className="text-3xl text-green-700 mb-2 mx-auto" />;
+      case "Aluguel Bahia Marina":
+        return <GiSailboat className="text-3xl text-green-700 mb-2 mx-auto" />;
       case "Outros":
-        return <FaPuzzlePiece className="text-3xl text-green-700 mb-2 mx-auto" />;
+        return <FaEllipsisH className="text-3xl text-green-700 mb-2 mx-auto" />;
       default:
         return null;
     }

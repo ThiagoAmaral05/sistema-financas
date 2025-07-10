@@ -5,17 +5,24 @@ import { toast } from "sonner";
 
 // Configuração dos campos para cada propriedade
 const propertyFields = {
-  "Colina B1": ["condominio", "luz", "agua"],
-  "Porto Trapiche": ["condominio", "luz", "internet"],
-  "D'Azul": ["condominio", "luz", "gas", "iptu"],
-  "Praia do Forte": ["condominio", "luz"],
-  "Hangar": ["condominio", "luz", "internet"],
+  "Colina B1": ["condominio", "luz", "agua", "iptu"],
+  "Porto Trapiche": ["condominio", "luz", "internet", "iptu"],
+  "D'Azur": ["condominio", "luz", "gas", "sky", "iptu"],
+  "Praia do Forte": ["condominio", "luz", "iptu"],
+  "Hangar": ["condominio", "luz", "internet", "iptu"],
   "Andre Contador": ["patrimonial", "mouraFacility", "mjb"],
-  "Automoveis": ["rangerSport", "bmwX3", "bmwX1", "nivus", "tCross", "rangerEvoque"],
+  "Plano de Saúde": ["familiaMoura"],
+  "RANGER SPORT": ["ipva", "seguro", "licenciamento"],
+  "BMW X3": ["ipva", "seguro", "licenciamento"],
+  "BMW X1": ["ipva", "seguro", "licenciamento", "financiamento"],
+  "NIVUS": ["ipva", "seguro", "licenciamento"],
+  "T-CROSS": ["ipva", "seguro", "licenciamento"],
+  "RANGER EVOQUE": ["ipva", "seguro", "licenciamento"],
   "Despesas Cauã": ["condominio", "faculdade", "aluguel", "fiancaMensal"],
-  "Seguro de Vida Familia Moura": ["josue", "mariana", "bia", "caua"],
-  "Seguro Patrimonial": ["colinaB1", "portoTrapiche", "dAzul", "praiaDoForte", "rcMouraFacility", "lanchaRole", "lanchaCaua"],
-  "Outros": ["baiaMarina"],
+  "Seguro de Vida Família Moura": ["josue", "mariana", "bia", "caua"],
+  "Seguro Patrimonial": ["colinaB1", "portoTrapiche", "dAzur", "praiaDoForte", "rcMouraFacility", "lanchaRole", "boteCaua"],
+  "Aluguel Bahia Marina": ["vagaLanchaRole", "vagaBoteCaua"],
+  "Outros": ["bahiaMarina"],
 };
 
 const fieldLabels = {
@@ -25,30 +32,37 @@ const fieldLabels = {
   internet: "Internet",
   gas: "Gás",
   iptu: "IPTU",
+  sky: "SKY",
   patrimonial: "Patrimonial",
   mouraFacility: "Moura Facility",
   mjb: "MJB",
-  rangerSport: "Ranger SPORT",
-  bmwX3: "BMW X3",
-  bmwX1: "BMW X1",
-  nivus: "NIVUS",
-  tCross: "T-CROSS",
-  rangerEvoque: "RANGER EVOQUE",
+  familiaMoura: "Família Moura",
   faculdade: "Faculdade",
   aluguel: "Aluguel",
   fiancaMensal: "Fiança Mensal",
+  ipva: "IPVA",
+  seguro: "Seguro",
+  licenciamento: "Licenciamento",
+  financiamento: "Financiamento",
   josue: "Josué",
   mariana: "Mariana",
   bia: "Bia",
   caua: "Cauã",
   colinaB1: "Colina B1",
   portoTrapiche: "Porto Trapiche",
-  dAzul: "D'Azul",
+  dAzur: "D'Azur",
   praiaDoForte: "Praia do Forte",
   rcMouraFacility: "RC Moura Facility",
   lanchaRole: "Lancha Rolé",
-  lanchaCaua: "Lancha Cauã",
-  baiaMarina: "Baia Marina",
+  boteCaua: "Bote Cauã",
+  salario: "Salário",
+  fgts: "FGTS",
+  alimentacao: "Alimentação",
+  transporte: "Transporte",
+  ferias: "Férias",
+  vagaLanchaRole: "Vaga S/058- Lancha Rolê",
+  vagaBoteCaua: "Vaga S/097- Bote Cauã",
+  bahiaMarina: "Bahia Marina",
 };
 
 export function ReportPanel() {
@@ -68,9 +82,11 @@ export function ReportPanel() {
   });
 
   const properties = [
-    "Colina B1", "Porto Trapiche", "D'Azul", "Praia do Forte",
-    "Hangar", "Andre Contador", "Automoveis", "Despesas Cauã",
-    "Seguro de Vida Familia Moura", "Seguro Patrimonial", "Outros"
+    "Colina B1", "Porto Trapiche", "D'Azur", "Praia do Forte",
+    "Hangar", "Andre Contador", "Plano de Saúde", "Despesas Cauã", 
+    "RANGER SPORT", "BMW X3", "BMW X1", "NIVUS", "T-CROSS", 
+    "RANGER EVOQUE", "Seguro de Vida Familia Moura", "Seguro Patrimonial", 
+    "Jairo Santana", "Aluguel Bahia Marina", "Outros"
   ];
 
   const formatCurrency = (amount: number) => {
