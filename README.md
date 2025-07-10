@@ -3,16 +3,13 @@
 Um sistema completo para gerenciamento de despesas e finanças pessoais.
 -----------------------------------------------------------------------------------
 
-## 🚀 Sobre o Projeto
-
 ## ⚙️ Como Utilizar
-
-## 📦 Criar Ambiente
+### 📦 Criar Ambiente
 
 - Crie a pasta do projeto
 - Crie um ambiente virtual
 
-## 🛠️ Pré-requisitos
+### 🛠️ Pré-requisitos
 
 - Node.js 
 - NPM 
@@ -55,15 +52,14 @@ Para executar como desenvolvimento:
 
 ## 🔒 Segurança
 
-- Autenticação obrigatória para acesso
-- Dados isolados por usuário
+- Dados protegidos
 - Validação de entrada 
 - Conexão segura com HTTPS
 
 ## 🧩 Aplicação
 
 - Local:
-   - http://localhost:5173/
+   - localhost
 - Web:
    - https://sistema-financas-nu.vercel.app/
 
@@ -72,6 +68,7 @@ Para executar como desenvolvimento:
 - Autenticação segura com usuário/senha
 - Gerenciamento de despesas por categorias
 - Relatórios detalhados por período
+- Consulta pelo calendário
 - Exportação para CSV
 - Interface responsiva e moderna
 - Dados em tempo real
@@ -79,4 +76,3 @@ Para executar como desenvolvimento:
 ## 📄 Licença
 
 Este projeto é privado e de uso restrito.
-
