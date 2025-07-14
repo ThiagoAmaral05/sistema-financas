@@ -26,6 +26,7 @@ const applicationTables = {
 
   propertyExpenses: defineTable({
     userId: v.id("users"),
+    userName: v.string(),
     propertyName: v.string(),
     date: v.string(),
     status: v.optional(v.union(v.literal("pago"), v.literal("a_pagar"))),
@@ -67,9 +68,8 @@ const applicationTables = {
     vagaLanchaRole: v.optional(v.number()),
     vagaBoteCaua: v.optional(v.number()),
   })
-    .index("by_user", ["userId"])
-    .index("by_user_and_property", ["userId", "propertyName"])
-    .index("by_user_and_date", ["userId", "date"]),
+    .index("by_property", ["propertyName"]) 
+    .index("by_date", ["date"]),
 };
 
 export default defineSchema({

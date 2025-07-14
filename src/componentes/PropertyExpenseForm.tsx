@@ -363,6 +363,9 @@ export function PropertyExpenseForm({ propertyName, onBack }: PropertyExpenseFor
                         </div>
                       </div>
                       <div className="flex items-center space-x-4">
+                        <p className="text-sm font-semibold text-gray-800 dark:text-white">
+                          Usuário: {expense.userName}
+                        </p>
                         <p className="font-bold text-lg text-gray-900 dark:text-white">
                           Total: {formatCurrency(total)}
                         </p>

@@ -58,8 +58,15 @@ export const create = mutation({
       Object.entries(fields).filter(([_, value]) => value !== undefined)
     );
 
+    // Busca dados do usuário
+    const user = await ctx.db.get(userId);
+    if (!user) {
+      throw new Error("Usuário não encontrado");
+    }
+
     return await ctx.db.insert("propertyExpenses", {
       userId,
+      userName: user.name || user.email || "Usuário",  // ← Nome do usuário
       propertyName,
       date,
       status: status || "a_pagar",
@@ -74,13 +81,8 @@ export const updateStatus = mutation({
     status: v.union(v.literal("pago"), v.literal("a_pagar"))
   },
   handler: async (ctx, args) => {
-    const userId = await getAuthUserId(ctx);
-    if (!userId) {
-      throw new Error("Usuário não autenticado");
-    }
-
     const expense = await ctx.db.get(args.id);
-    if (!expense || expense.userId !== userId) {
+    if (!expense) {
       throw new Error("Despesa não encontrada");
     }
 
@@ -95,24 +97,15 @@ export const list = query({
     endDate: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
-    const userId = await getAuthUserId(ctx);
-    if (!userId) {
-      throw new Error("Usuário não autenticado");
-    }
+    await getAuthUserId(ctx);
 
-    let query = ctx.db
-      .query("propertyExpenses")
-      .withIndex("by_user", (q) => q.eq("userId", userId));
+    let expenses = await ctx.db.query("propertyExpenses").order("desc").collect();
 
     if (args.propertyName) {
-      query = ctx.db
-        .query("propertyExpenses")
-        .withIndex("by_user_and_property", (q) => 
-          q.eq("userId", userId).eq("propertyName", args.propertyName!)
-        );
+      expenses = expenses.filter(
+        (e) => e.propertyName === args.propertyName
+      );
     }
-
-    const expenses = await query.order("desc").collect();
 
     // Filter by date range if provided
     if (args.startDate || args.endDate) {
@@ -131,15 +124,12 @@ export const list = query({
 export const getByProperty = query({
   args: { propertyName: v.string() },
   handler: async (ctx, args) => {
-    const userId = await getAuthUserId(ctx);
-    if (!userId) {
-      throw new Error("Usuário não autenticado");
-    }
+    await getAuthUserId(ctx);
 
     return await ctx.db
       .query("propertyExpenses")
-      .withIndex("by_user_and_property", (q) => 
-        q.eq("userId", userId).eq("propertyName", args.propertyName)
+      .withIndex("by_property", (q) => 
+        q.eq("propertyName", args.propertyName)
       )
       .order("desc")
       .collect();
@@ -149,13 +139,8 @@ export const getByProperty = query({
 export const remove = mutation({
   args: { id: v.id("propertyExpenses") },
   handler: async (ctx, args) => {
-    const userId = await getAuthUserId(ctx);
-    if (!userId) {
-      throw new Error("Usuário não autenticado");
-    }
-
     const expense = await ctx.db.get(args.id);
-    if (!expense || expense.userId !== userId) {
+    if (!expense) {
       throw new Error("Despesa não encontrada");
     }
 
