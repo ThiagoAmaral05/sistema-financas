@@ -10,6 +10,15 @@ const propertyFields = {
   "D'Azur": ["condominio", "luz", "gas", "sky", "iptu"],
   "Praia do Forte": ["condominio", "luz", "iptu"],
   "Hangar": ["condominio", "luz", "internet", "iptu"],
+  "Apartamento 1201": ["amortizacao", "parcelaMensal"],
+  "Apartamento 1401": ["amortizacao", "parcelaMensal"],
+  "Apartamento 1402": ["amortizacao", "parcelaMensal"],
+  "Apartamento 1906": ["amortizacao", "parcelaMensal"],
+  "Apartamento 913": ["parcelaMensal"],
+  "Apartamento 1507": ["parcelaMensal"],
+  "Apartamento 1508": ["parcelaMensal"],
+  "Apartamento 1802": ["parcelaMensal"],
+  "F.I.P número 140": ["parcelaMensal"],
   "Andre Contador": ["patrimonial", "mouraFacility", "mjb"],
   "Plano de Saúde": ["familiaMoura"],
   "RANGER SPORT": ["ipva", "seguro", "licenciamento"],
@@ -32,6 +41,8 @@ const fieldLabels = {
   gas: "Gás",
   iptu: "IPTU",
   sky: "SKY",
+  amortizacao: "Amortização",
+  parcelaMensal: "Parcela Mensal",
   patrimonial: "Patrimonial",
   mouraFacility: "Moura Facility",
   mjb: "MJB",
@@ -81,8 +92,10 @@ export function ReportPanel() {
 
   const properties = [
     "Colina B1", "Porto Trapiche", "D'Azur", "Praia do Forte",
-    "Hangar", "Andre Contador", "Plano de Saúde", "Despesas Cauã", 
-    "RANGER SPORT", "BMW X3", "BMW X1", "NIVUS", "T-CROSS", 
+    "Hangar", "Apartamento 1201", "Apartamento 1401", "Apartamento 1402", 
+    "Apartamento 1906", "Apartamento 913", "Apartamento 1507", "Apartamento 1508", 
+    "Apartamento 1802", "F.I.P número 140", "Andre Contador", "Plano de Saúde", 
+    "Despesas Cauã", "RANGER SPORT", "BMW X3", "BMW X1", "NIVUS", "T-CROSS", 
     "RANGER EVOQUE", "Seguro de Vida Familia Moura", "Seguro Patrimonial", 
     "Jairo Santana", "Aluguel Bahia Marina"
   ];

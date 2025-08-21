@@ -27,8 +27,8 @@ export function Calendar() {
   const getExpenseTotal = (expense: any) => {
     if (typeof expense.valorTotal === "number") return expense.valorTotal;
 
-    const validKeys = ["condominio", "luz", "agua", "internet", "gas", "iptu", "sky", "patrimonial", "mouraFacility", "mjb", "familiaMoura", 
-                      "faculdade", "aluguel", "fiancaMensal", "ipva", "seguro", "licenciamento", "financiamento", "josue", "mariana", "bia", 
+    const validKeys = ["condominio", "luz", "agua", "internet", "gas", "iptu", "sky", "amortizacao", "parcelaMensal", "patrimonial", "mouraFacility", "mjb", 
+                      "familiaMoura", "faculdade", "aluguel", "fiancaMensal", "ipva", "seguro", "licenciamento", "financiamento", "josue", "mariana", "bia", 
                       "caua", "colinaB1", "portoTrapiche", "dAzur", "praiaDoForte", "rcMouraFacility", "lanchaRole", "boteCaua", "salario", "fgts", 
                       "alimentacao", "transporte", "ferias", "vagaLanchaRole", "vagaBoteCaua"]; // ajuste conforme seu schema
     return validKeys.reduce((sum, key) => sum + (expense[key] || 0), 0);

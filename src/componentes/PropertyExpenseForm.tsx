@@ -43,6 +43,37 @@ const propertyFields = {
     { key: "internet", label: "Internet" },
     { key: "iptu", label: "IPTU" },
   ],
+  "Apartamento 1201": [
+    { key: "amortizacao", label: "Amortização" },
+    { key: "parcelaMensal", label: "Parcela Mensal" },
+  ],
+  "Apartamento 1401": [
+    { key: "amortizacao", label: "Amortização" },
+    { key: "parcelaMensal", label: "Parcela Mensal" },
+  ],
+  "Apartamento 1402": [
+    { key: "amortizacao", label: "Amortização" },
+    { key: "parcelaMensal", label: "Parcela Mensal" },
+  ],
+  "Apartamento 1906": [
+    { key: "amortizacao", label: "Amortização" },
+    { key: "parcelaMensal", label: "Parcela Mensal" },
+  ],
+  "Apartamento 913": [
+    { key: "parcelaMensal", label: "Parcela Mensal" },
+  ],
+  "Apartamento 1507": [
+    { key: "parcelaMensal", label: "Parcela Mensal" },
+  ],
+  "Apartamento 1508": [
+    { key: "parcelaMensal", label: "Parcela Mensal" },
+  ],
+  "Apartamento 1802": [
+    { key: "parcelaMensal", label: "Parcela Mensal" },
+  ],
+  "F.I.P número 140": [
+    { key: "parcelaMensal", label: "Parcela Mensal" },
+  ],
   "Andre Contador": [
     { key: "patrimonial", label: "Patrimonial" },
     { key: "mouraFacility", label: "Moura Facility" },

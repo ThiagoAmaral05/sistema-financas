@@ -38,6 +38,8 @@ const applicationTables = {
     gas: v.optional(v.number()),
     iptu: v.optional(v.number()),
     sky: v.optional(v.number()),
+    amortizacao: v.optional(v.number()),
+    parcelaMensal: v.optional(v.number()),
     patrimonial: v.optional(v.number()),
     mouraFacility: v.optional(v.number()),
     mjb: v.optional(v.number()),

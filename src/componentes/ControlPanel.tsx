@@ -11,19 +11,36 @@ interface ControlPanelProps {
 export function ControlPanel({ onPropertySelect }: ControlPanelProps) {
   const loggedInUser = useQuery(api.auth.loggedInUser);
   const properties = [
-    // Grupo 1 - Imóveis
+    // Grupo 1 - Imóveis 
     { name: "Colina B1", category: "Imóveis" },
     { name: "Porto Trapiche", category: "Imóveis" },
     { name: "D'Azur", category: "Imóveis" },
     { name: "Praia do Forte", category: "Imóveis" },
     { name: "Hangar", category: "Imóveis" },
 
-    // Grupo 2 - Pessoal
+    // Grupo 2 - Beach Class Jaguaribe
+    { name: "Apartamento 1201", category: "Beach Class Jaguaribe" },
+    { name: "Apartamento 1401", category: "Beach Class Jaguaribe" },
+    { name: "Apartamento 1402", category: "Beach Class Jaguaribe" },
+    { name: "Apartamento 1906", category: "Beach Class Jaguaribe" },
+
+    // Grupo 3 - Infinity Salvador
+    { name: "Apartamento 913", category: "Infinity Salvador" },
+    { name: "Apartamento 1507", category: "Infinity Salvador" },
+    { name: "Apartamento 1508", category: "Infinity Salvador" },
+
+    // Grupo 4 - Patrimar BH
+    { name: "Apartamento 1802", category: "Patrimar- BH" },
+
+    // Grupo 5 - Reserva Apoema
+    { name: "F.I.P Número 140", category: "Reserva Apoema" },
+
+    // Grupo 6 - Pessoal
     { name: "Andre Contador", category: "Pessoal" },
     { name: "Plano de Saúde", category: "Pessoal" },
     { name: "Despesas Cauã", category: "Pessoal" },
 
-    // Grupo 3 - Automóveis
+    // Grupo 7 - Automóveis
     { name: "RANGER SPORT", category: "Automóveis" },
     { name: "BMW X3", category: "Automóveis" },
     { name: "BMW X1", category: "Automóveis" },
@@ -31,14 +48,14 @@ export function ControlPanel({ onPropertySelect }: ControlPanelProps) {
     { name: "T-CROSS", category: "Automóveis" },
     { name: "RANGER EVOQUE", category: "Automóveis" },
 
-    // Grupo 4 - Seguros
+    // Grupo 8 - Seguros
     { name: "Seguro de Vida Família Moura", category: "Seguros" },
     { name: "Seguro Patrimonial", category: "Seguros" },
     
-    // Grupo 5 - Funcionários
+    // Grupo 9 - Funcionários 
     { name: "Jairo Santana", category: "Funcionáros" },
 
-    // Grupo 6 - Outros
+    // Grupo 10 - Outros
     { name: "Aluguel Bahia Marina", category: "Outros" },
   ];
 
@@ -50,6 +67,16 @@ export function ControlPanel({ onPropertySelect }: ControlPanelProps) {
       case "Praia do Forte":
       case "Hangar":
         return <FaHome className="text-3xl text-green-700 mb-2 mx-auto" />;
+      case "Apartamento 1201":
+      case "Apartamento 1401":
+      case "Apartamento 1402":
+      case "Apartamento 1906":
+      case "Apartamento 913":
+      case "Apartamento 1507":
+      case "Apartamento 1508":
+      case "Apartamento 1802":
+      case "F.I.P Número 140":
+        return <FaBuilding className="text-3xl text-green-700 mb-2 mx-auto" />;
       case "Andre Contador":
         return <BsCalculator className="text-3xl text-green-700 mb-2 mx-auto" />;
       case "Plano de Saúde":
