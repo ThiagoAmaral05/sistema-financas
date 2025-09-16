@@ -23,7 +23,7 @@ export const create = mutation({
     familiaMoura: v.optional(v.number()),
     faculdade: v.optional(v.number()),
     aluguel: v.optional(v.number()),
-    fiancaMensal: v.optional(v.number()),
+    caucao: v.optional(v.number()),
     ipva: v.optional(v.number()),
     seguro: v.optional(v.number()),
     licenciamento: v.optional(v.number()),

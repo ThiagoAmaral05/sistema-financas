@@ -85,8 +85,10 @@ const propertyFields = {
   "Despesas Cauã": [
     { key: "condominio", label: "Condomínio" },
     { key: "faculdade", label: "Faculdade" },
+    { key: "luz", label: "Luz" },
+    { key: "internet", label: "Internet" },
     { key: "aluguel", label: "Aluguel" },
-    { key: "fiancaMensal", label: "Fiança Mensal" },
+    { key: "caucao", label: "Caução" },
   ],
   "RANGER SPORT": [
     { key: "ipva", label: "IPVA" },
