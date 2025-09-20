@@ -53,7 +53,7 @@ const applicationTables = {
     financiamento: v.optional(v.number()),
     josue: v.optional(v.number()),
     mariana: v.optional(v.number()),
-    bia: v.optional(v.number()),
+    beatriz: v.optional(v.number()),
     caua: v.optional(v.number()),
     colinaB1: v.optional(v.number()),
     portoTrapiche: v.optional(v.number()),

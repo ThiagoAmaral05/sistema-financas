@@ -33,7 +33,7 @@ export function ControlPanel({ onPropertySelect }: ControlPanelProps) {
     { name: "Apartamento 1802", category: "Patrimar- BH" },
 
     // Grupo 5 - Reserva Apoema
-    { name: "F.I.P Número 140", category: "Reserva Apoema" },
+    { name: "FIP Número 140", category: "Reserva Apoema" },
 
     // Grupo 6 - Pessoal
     { name: "Andre Contador", category: "Pessoal" },
@@ -75,7 +75,7 @@ export function ControlPanel({ onPropertySelect }: ControlPanelProps) {
       case "Apartamento 1507":
       case "Apartamento 1508":
       case "Apartamento 1802":
-      case "F.I.P Número 140":
+      case "FIP Número 140":
         return <FaBuilding className="text-3xl text-green-700 mb-2 mx-auto" />;
       case "Andre Contador":
         return <BsCalculator className="text-3xl text-green-700 mb-2 mx-auto" />;

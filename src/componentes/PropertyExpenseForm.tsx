@@ -71,7 +71,7 @@ const propertyFields = {
   "Apartamento 1802": [
     { key: "parcelaMensal", label: "Parcela Mensal" },
   ],
-  "F.I.P número 140": [
+  "FIP Número 140": [
     { key: "parcelaMensal", label: "Parcela Mensal" },
   ],
   "Andre Contador": [
@@ -124,7 +124,7 @@ const propertyFields = {
   "Seguro de Vida Família Moura": [
     { key: "josue", label: "Josué" },
     { key: "mariana", label: "Mariana" },
-    { key: "bia", label: "Bia" },
+    { key: "beatriz", label: "Beatriz" },
     { key: "caua", label: "Cauã" },
   ],
   "Seguro Patrimonial": [
